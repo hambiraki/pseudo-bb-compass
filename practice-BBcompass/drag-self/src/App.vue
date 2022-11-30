@@ -22,11 +22,11 @@
   <div
   class="draggable-space"
   v-on:dragover.prevent>
-  Drop Zone
-  <div src=".\assets\logo.svg" draggable="true"
-    v-on:dragstart="move" v-on:dragend.prevent="move"
-    class="moving-box" v-bind:style="boxStyle" >
-  </div>
+    Drop Zone
+    <div src=".\assets\logo.svg" draggable="true"
+      v-on:dragstart="move" v-on:dragend.prevent="move"
+      class="moving-box" v-bind:style="boxStyle" >
+    </div>
   </div>
 </template>
 
