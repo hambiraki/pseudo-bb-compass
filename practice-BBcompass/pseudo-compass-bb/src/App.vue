@@ -1,6 +1,22 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { computed, ref } from 'vue';
+
+  const locationBaseUrl = "https://ps4.borderbreak.com/data/location"
+  const mapLocate = ref("第3採掘島")
+  const mapType = ref("夕暮れの戦火")
+  const minimapIndex = "sub_6.jpg"
+
+  const minimapAlt = computed(
+    (): string =>{
+      return `${mapLocate.value} ${mapType.value}`
+    }
+  )
+  const minimapUrl = computed(
+    (): string =>{
+      const rawUrl = `${locationBaseUrl}/${mapLocate.value}/${mapType.value}/${minimapIndex}`
+      return encodeURI(rawUrl)
+    }
+  )
 </script>
 
 <template>
@@ -17,6 +33,10 @@ import HelloWorld from './components/HelloWorld.vue'
     </div>
   </header>
 
+  <img
+    v-bind:alt="minimapAlt"
+    v-bind:src="minimapUrl"
+    class="map-style"/>
   <RouterView />
 </template>
 
@@ -24,6 +44,10 @@ import HelloWorld from './components/HelloWorld.vue'
 header {
   line-height: 1.5;
   max-height: 100vh;
+}
+
+.map-style {
+
 }
 
 .logo {
