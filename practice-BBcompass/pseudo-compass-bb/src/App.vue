@@ -1,53 +1,19 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import MinimapImg from '@/components/MinimapImg.vue';
 
-  const locationBaseUrl = "https://ps4.borderbreak.com/data/location"
-  const mapLocate = ref("第3採掘島")
-  const mapType = ref("夕暮れの戦火")
-  const minimapIndex = "sub_6.jpg"
-
-  const minimapAlt = computed(
-    (): string =>{
-      return `${mapLocate.value} ${mapType.value}`
-    }
-  )
-  const minimapUrl = computed(
-    (): string =>{
-      const rawUrl = `${locationBaseUrl}/${mapLocate.value}/${mapType.value}/${minimapIndex}`
-      return encodeURI(rawUrl)
-    }
-  )
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
   </header>
 
-  <img
-    v-bind:alt="minimapAlt"
-    v-bind:src="minimapUrl"
-    class="map-style"/>
-  <RouterView />
+  <MinimapImg/>
 </template>
 
 <style scoped>
 header {
   line-height: 1.5;
   max-height: 100vh;
-}
-
-.map-style {
-
 }
 
 .logo {
