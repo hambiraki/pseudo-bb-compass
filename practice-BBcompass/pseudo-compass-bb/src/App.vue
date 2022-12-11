@@ -1,13 +1,34 @@
 <script setup lang="ts">
 import MinimapImg from '@/components/MinimapImg.vue';
+import { ref } from 'vue';
 
+const mapLocate = ref("第3採掘島");
+const mapType = ref("夕暮れの戦火");
+// const changeMap = ():void => {
+//   if(minimap !==  undefined){
+//     if(minimap.value !== undefined){
+//       minimap.value.onChangeMap();
+//     }
+//   }
+// }
 </script>
 
 <template>
   <header>
   </header>
-
-  <MinimapImg/>
+  <p>マップ場所
+    <select v-model="mapLocate">
+      <option>第3採掘島</option>
+      <option>第3採掘島あ</option>
+    </select>
+  </p>
+  <p>マップ種類
+    <select v-model="mapType" v-on:change="">
+      <option>夕暮れの戦火</option>
+      <option>臨海決戦</option>
+    </select>
+  </p>
+  <MinimapImg v-bind:map-locate="mapLocate" v-bind:map-type="mapType"/>
 </template>
 
 <style scoped>
