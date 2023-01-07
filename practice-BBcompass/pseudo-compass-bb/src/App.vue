@@ -4,13 +4,6 @@ import { ref } from 'vue';
 
 const mapLocate = ref("第3採掘島");
 const mapType = ref("夕暮れの戦火");
-// const changeMap = ():void => {
-//   if(minimap !==  undefined){
-//     if(minimap.value !== undefined){
-//       minimap.value.onChangeMap();
-//     }
-//   }
-// }
 </script>
 
 <template>
