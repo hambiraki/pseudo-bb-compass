@@ -6,7 +6,7 @@
     <button v-on:click="drawSector">四角形</button>
   </p>
   <div draggable="true" class="moving-box"
-    v-on:dragstart.prevent="move" v-on:dragend.prevent="move"
+    v-on:dragstartz="move" v-on:dragend.prevent="move"
     v-bind:style="boxStyle"></div>
 </template>
 
@@ -38,8 +38,8 @@ const drawSector = ():void => {
 const x = ref(0);
 const y = ref(0);
 const move = (event: MouseEvent) => {
-  x.value += event.offsetX - 50;
-  y.value += event.offsetY - 50;
+  x.value = event.offsetX;
+  y.value = event.offsetY;
 }
 const boxStyle = computed (
   () : StyleValue => {
