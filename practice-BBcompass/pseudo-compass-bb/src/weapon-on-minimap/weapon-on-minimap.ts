@@ -14,15 +14,20 @@ export abstract class WeaponOnMinimap {
     abstract animate(ctx: CanvasRenderingContext2D, time: number): void;
 };
 
-export abstract class constAnimate {
-    abstract draw(ctx: CanvasRenderingContext2D): void;
-    animate = (ctx: CanvasRenderingContext2D, time: number): void => {
-        this.draw(ctx);
-    };
+type ClassConstructor<T> = new (...args: any[]) => T;
+export function withConstAnimate<C extends ClassConstructor<{
+    draw(ctx: CanvasRenderingContext2D): void;
+}>>(Class: C){
+    return class extends Class {
+        animate = (ctx: CanvasRenderingContext2D, time: number): void => {
+            this.draw(ctx);
+        };
+    }
 }
-
-export abstract class NonRotatable {
-    rotate = (event:DragEvent): void => {};
+export function NonRotatable<C extends ClassConstructor<{}>>(Class: C){
+    return class extends Class {
+        rotate = (event:DragEvent): void => {};
+    }
 }
 
 interface LocationOnMinimap {
