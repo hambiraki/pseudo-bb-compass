@@ -1,6 +1,6 @@
-import { FILL_STYLE, NonRotatable, WeaponOnMinimap } from "./weapon-on-minimap";
+import { FILL_STYLE, NonRotatable, WeaponOnMinimap, withConstAnimate } from "./weapon-on-minimap";
 
-abstract class Sensor extends NonRotatable(WeaponOnMinimap){
+abstract class Sensor extends withConstAnimate(NonRotatable(WeaponOnMinimap)){
     readonly abstract radius: number;
     draw = (ctx: CanvasRenderingContext2D): void => {
         ctx.beginPath();
@@ -8,4 +8,9 @@ abstract class Sensor extends NonRotatable(WeaponOnMinimap){
         ctx.fillStyle = FILL_STYLE;
         ctx.fill();
     }
+}
+
+class SensorN extends Sensor{
+    modelNumber = "S2-N";
+    radius = 59;
 }
