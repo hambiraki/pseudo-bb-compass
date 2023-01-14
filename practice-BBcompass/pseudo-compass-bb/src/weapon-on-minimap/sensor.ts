@@ -1,5 +1,7 @@
+import type { Meter } from "@/units";
 import { FILL_STYLE, NonRotatable, WeaponOnMinimap, withConstAnimate } from "./weapon-on-minimap";
 
+// 索敵センサー系統
 abstract class Sensor extends withConstAnimate(NonRotatable(WeaponOnMinimap)){
     readonly abstract radius: number;
     draw = (ctx: CanvasRenderingContext2D): void => {
@@ -10,7 +12,8 @@ abstract class Sensor extends withConstAnimate(NonRotatable(WeaponOnMinimap)){
     }
 }
 
+// 索敵センサー
+// 型番：S2-N
 class SensorN extends Sensor{
-    modelNumber = "S2-N";
-    radius = 59;
+    radius = 59 as Meter;
 }
