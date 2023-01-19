@@ -82,12 +82,6 @@ const getMapCanvasContext = (): CanvasRenderingContext2D | null =>{
   return canvas.getContext('2d');
 };
 
-const drawRect = (): void =>{
-  const ctx = getMapCanvasContext();
-  if(ctx === null){ return; }
-  ctx.fillRect(0,0,50,100);
-};
-
 const drawMap = (): void => {
   const ctx = getMapCanvasContext();
   if(ctx === null){ return; }

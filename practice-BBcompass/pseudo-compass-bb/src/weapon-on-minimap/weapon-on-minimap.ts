@@ -1,41 +1,83 @@
-import type { MilliSecond, Pixel } from "@/units";
+import { Length } from "@/units";
 
-export const FILL_STYLE = "rgba(255,0,0,0.3)"
+const CENTER_POINT_COLOR = "rgba(255,255,255,1)";
+const AREA_COLOR = "rgba(255,0,0,0.3)";
 
-export abstract class WeaponOnMinimap {
-    location: LocationOnMinimap = {
-        x: 0 as Pixel,
-        y: 0 as Pixel,
+export class WeaponOnMinimap {
+    constructor(readonly figure:Figure){}
+    location = new Location(Length.byPixel(0), Length.byPixel(0));
+    rotation = new Rotation();
+    private get centerPoint():Path2D{
+        const centerPoint = new Path2D();
+        centerPoint.arc(
+            this.location.x.pixel, this.location.y.pixel,
+            Length.byMeter(1).pixel,
+            0, 2 * Math.PI);        
+            return centerPoint;
+        };
+    readonly isClicked = (
+        ctx:CanvasRenderingContext2D, point:Location): boolean =>{
+        return ctx.isPointInPath(this.figure.wholeArea, point.x.pixel, point.y.pixel)
+            || ctx.isPointInPath(this.centerPoint, point.x.pixel, point.y.pixel);
+    }
+    readonly transform = (ctx:CanvasRenderingContext2D, point:Location):void =>{
+        if(ctx.isPointInPath(this.centerPoint, point.x.pixel, point.y.pixel)){
+            this.location.moveTo(point.x, point.y);
+        }else if(ctx.isPointInPath(this.figure.wholeArea, point.x.pixel, point.y.pixel)){
+            this.rotation.rotateTo(Math.atan(
+                this.location.x.difference(this.)
+            ))
+        }
+        
+    }
+    readonly draw = (ctx: CanvasRenderingContext2D): void => {
+        ctx.fillStyle = CENTER_POINT_COLOR;
+        ctx.fill(this.centerPoint);
+        ctx.fillStyle = AREA_COLOR;
+        ctx.fill(this.figure.wholeArea);
     };
-    move = (event: DragEvent): void => {
-        this.location.x = this.location.x + event.offsetX as Pixel;
-        this.location.y = this.location.y + event.offsetY as Pixel;
+    readonly animate = (ctx: CanvasRenderingContext2D, msecTime: number): void => {
+        ctx.fillStyle = CENTER_POINT_COLOR;
+        ctx.fill(this.centerPoint);
+        ctx.fillStyle = AREA_COLOR;
+        ctx.fill(this.figure.areaAt(msecTime));
     };
-    abstract rotate(event:DragEvent): void;
-    abstract draw(ctx: CanvasRenderingContext2D): void;
-    abstract animate(ctx: CanvasRenderingContext2D, time: MilliSecond): void;
 };
 
+export interface Figure{
+    get wholeArea():Path2D;
+    areaAt(msecTime: number): Path2D;        
+}
 type ClassConstructor<T> = abstract new (...args: any[]) => T;
-export function withConstAnimate<C extends ClassConstructor<{
-    draw(ctx: CanvasRenderingContext2D): void;
+export function NotAnimate<C extends ClassConstructor<{
+    get wholeArea():Path2D;
 }>>(Class: C){
-    abstract class TmpClass extends Class {
-        animate = (ctx: CanvasRenderingContext2D, time: MilliSecond): void => {
-            this.draw(ctx);
+    abstract class NoNameClass extends Class {
+        areaAt(msecTime: number): Path2D{
+            return this.wholeArea;
         };
     }
-    return TmpClass
+    return NoNameClass
 }
-export function NonRotatable<C extends ClassConstructor<{}>>(Class: C){
-    abstract class tmpcls extends Class {
-        rotate = (event:DragEvent): void => {};
+
+class Location{
+    private _x:Length;
+    private _y:Length;
+    constructor(x:Length, y:Length){
+        this._x = x;
+        this._y = y;
     }
-    return tmpcls
+    get x():Length{return this.x;}
+    get y():Length{return this.y;}
+    moveTo = (x:Length, y:Length):void => {
+        this._x = x;
+        this._y = y;
+    }
 }
 
-interface LocationOnMinimap {
-    x: Pixel;
-    y: Pixel;
+class Rotation{
+    angle = 0;
+    rotateTo = (radAngle:number): void =>{
+        this.angle = radAngle;
+    };
 }
-
