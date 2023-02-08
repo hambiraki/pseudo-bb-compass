@@ -1,89 +1,72 @@
+<template>
+  <div>
+    <div class="wrap">
+      <div class="ribbonmenu z-index-ribbonmenu">
+        <div class="celltitle" id="head_map">マップ</div>
+        <div>
+          <p>
+            <select v-model="mapLocate">
+              <option>第3採掘島</option>
+              <option>第3採掘島あ</option>
+            </select>
+          </p>
+          <p>
+            <select v-model="mapType" v-on:change="">
+              <option>夕暮れの戦火</option>
+              <option>臨海決戦</option>
+            </select>
+          </p>
+        </div>
+      </div>
+      <div class="ribbonmenu z-index-ribbonmenu">
+        <div class="celltitle" id="head_weapon">武器</div>
+        <p><select v-for="seriesName in seriesNames">
+          <option>{{ seriesName }}</option>
+        </select></p>
+        <p><select>
+          <option>索敵センサー</option>
+          <option>小型索敵センサー</option>
+          <option>広域索敵センサー</option>
+          <option>新型索敵センサー</option>
+        </select></p>
+        <p><button v-on:click="addWeapon">追加</button></p>
+      </div>
+    </div>
+    <MinimapImg v-bind:map-locate="mapLocate" v-bind:map-type="mapType"/>
+  </div>
+</template>
+
 <script setup lang="ts">
 import MinimapImg from '@/components/MinimapImg.vue';
 import { ref } from 'vue';
+import { SeriesFactory } from './weapon-on-minimap/weapon-factory';
+import type { WeaponOnMinimap } from './weapon-on-minimap/weapon-on-minimap';
 
 const mapLocate = ref("第3採掘島");
 const mapType = ref("夕暮れの戦火");
+
+const seriesNames = SeriesFactory.seriesNames;
+// head_weaponに武器をあれこれする責務がある
+const addWeapon = ():void => {
+  // 
+}
 </script>
 
-<template>
-  <header>
-  </header>
-  <p>マップ場所
-    <select v-model="mapLocate">
-      <option>第3採掘島</option>
-      <option>第3採掘島あ</option>
-    </select>
-  </p>
-  <p>マップ種類
-    <select v-model="mapType" v-on:change="">
-      <option>夕暮れの戦火</option>
-      <option>臨海決戦</option>
-    </select>
-  </p>
-  <MinimapImg v-bind:map-locate="mapLocate" v-bind:map-type="mapType"/>
-</template>
 
+div.ribbonmenu{
 <style scoped>
 header {
   line-height: 1.5;
   max-height: 100vh;
 }
+width: 150px;
+overflow:hidden;
+-webkit-box-shadow:0px 2px 4px gray;
+box-shadow:0px 2px 4px gray;
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+background-image:linear-gradient(to bottom, #FFFFFF, #F0F0F0);
 }
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.wrap{
+  display:flex;
 }
 </style>

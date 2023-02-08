@@ -1,6 +1,6 @@
 export class Length {
     private pxLength:number;
-    static scale:number;  // scale[m/px]
+    static scale:number = 1;  // scale[m/px]
     private constructor(pxLength:number){
         this.pxLength = pxLength
     }
@@ -12,7 +12,10 @@ export class Length {
     }
     get meter():number{return this.pxLength * Length.scale;}
     get pixel():number{return this.pxLength;}
-    difference(other:Length){
-        return Length.byPixel(this.pixel - other.pixel);
+    static subtraction(minuend:Length, subtrahend:Length):Length{
+        return Length.byPixel(minuend.pixel - subtrahend.pixel);
+    }
+    static division(dividend:Length, divisor:Length):number{
+        return dividend.pixel / divisor.pixel
     }
 }
