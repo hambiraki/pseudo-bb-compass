@@ -1,0 +1,64 @@
+import { Length } from "@/units";
+const CENTER_POINT_COLOR = "rgba(255,255,255,1)";
+const AREA_COLOR = "rgba(255,0,0,0.3)";
+export class WeaponOnMinimap {
+    area;
+    constructor(area) {
+        this.area = area;
+    }
+    location = new Location(Length.byPixel(0), Length.byPixel(0));
+    rotation = new Rotation();
+    get centerPoint() {
+        const centerPoint = new Path2D();
+        centerPoint.arc(this.location.x.pixel, this.location.y.pixel, Length.byMeter(25).pixel, 0, 2 * Math.PI);
+        return centerPoint;
+    }
+    ;
+    isClicked = (ctx, point) => {
+        return ctx.isPointInPath(this.area.whole(this.location, this.rotation), point.x.pixel, point.y.pixel)
+            || ctx.isPointInPath(this.centerPoint, point.x.pixel, point.y.pixel);
+    };
+    transform = (ctx, point) => {
+        if (ctx.isPointInPath(this.centerPoint, point.x.pixel, point.y.pixel)) {
+            this.location.moveTo(point.x, point.y);
+            return;
+        }
+        if (ctx.isPointInPath(this.area.whole(this.location, this.rotation), point.x.pixel, point.y.pixel)) {
+            this.rotation.rotateTo(Math.atan(Length.division(Length.subtraction(this.location.x, point.x), Length.subtraction(this.location.y, point.y))));
+            return;
+        }
+    };
+    draw = (ctx) => {
+        ctx.fillStyle = AREA_COLOR;
+        ctx.fill(this.area.whole(this.location, this.rotation));
+        ctx.fillStyle = CENTER_POINT_COLOR;
+        ctx.fill(this.centerPoint);
+    };
+    animate = (ctx, msecTime) => {
+        ctx.fillStyle = AREA_COLOR;
+        ctx.fill(this.area.at(this.location, this.rotation, msecTime));
+        ctx.fillStyle = CENTER_POINT_COLOR;
+        ctx.fill(this.centerPoint);
+    };
+}
+;
+export class Location {
+    _x;
+    _y;
+    constructor(x, y) {
+        this._x = x;
+        this._y = y;
+    }
+    get x() { return this._x; }
+    get y() { return this._y; }
+    moveTo = (x, y) => {
+        this._x = x;
+        this._y = y;
+    };
+}
+export class Rotation {
+    angle = 0;
+    rotateTo = (radAngle) => {
+        this.angle = radAngle;
+    };
+}
