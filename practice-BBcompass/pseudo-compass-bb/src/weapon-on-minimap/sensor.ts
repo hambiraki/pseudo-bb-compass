@@ -3,7 +3,9 @@ import { WeaponOnMinimap } from "./weapon-on-minimap";
 import type { Location, Rotation, Area } from "./weapon-on-minimap";
 import type { ModelFactory } from "./weapon-factory";
 
-
+/**
+ * @private
+ */
 export class SensorFactory implements ModelFactory{
     static readonly modelNames = [
         "索敵センサー",
