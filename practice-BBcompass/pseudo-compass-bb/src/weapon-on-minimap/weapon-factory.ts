@@ -1,4 +1,4 @@
-import { SensorFactory } from "./sensor";
+import {} from "./sensor";
 import type { WeaponOnMinimap } from "./weapon-on-minimap";
 
 export interface ModelFactory{
@@ -12,7 +12,7 @@ export class SeriesFactory{
     create = (seriesName:typeof SeriesFactory.seriesNames[number]):ModelFactory => {
         switch(seriesName){
             case "索敵センサー":
-                return new SensorFactory();
+                return new Se();
         }
     }
 }
