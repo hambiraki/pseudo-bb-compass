@@ -20,8 +20,8 @@ module.exports = {
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
   ],
   rules: {
+    "import-access/jsdoc": ["error"],
     "import/prefer-default-export": "off",
     "@typescript-eslint/quotes": ["error", "double"],
-    "import-access/jsdoc": ["error"],
   },
 };
