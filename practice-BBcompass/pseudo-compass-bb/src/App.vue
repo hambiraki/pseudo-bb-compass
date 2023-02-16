@@ -53,20 +53,5 @@ const addWeapon = ():void => {
 </script>
 
 
-div.ribbonmenu{
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-width: 150px;
-overflow:hidden;
--webkit-box-shadow:0px 2px 4px gray;
-box-shadow:0px 2px 4px gray;
-
-background-image:linear-gradient(to bottom, #FFFFFF, #F0F0F0);
-}
-.wrap{
-  display:flex;
-}
 </style>
