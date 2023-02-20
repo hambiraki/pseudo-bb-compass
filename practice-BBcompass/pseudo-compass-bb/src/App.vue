@@ -18,6 +18,7 @@
           </p>
         </div>
       </div>
+      <!-- 武器をコンポーネントにまとめた方がよい？ -->
       <div class="ribbonmenu z-index-ribbonmenu">
         <div class="celltitle" id="head_weapon">武器</div>
         <p><select v-model="selectedSeries">
