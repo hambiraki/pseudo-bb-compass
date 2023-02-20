@@ -13,6 +13,9 @@ export class SensorFactory implements ModelFactory{
         "広域索敵センサー",
         "新型索敵センサー",
     ] as const;
+    get modelNames():readonly string[] {
+        return SensorFactory.modelNames;
+    }
     create = (modelName:typeof SensorFactory.modelNames[number]):WeaponOnMinimap => {
         switch(modelName){
             case "索敵センサー":
