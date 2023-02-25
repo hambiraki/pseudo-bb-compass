@@ -21,137 +21,186 @@
       <!-- 武器をコンポーネントにまとめた方がよい？ -->
       <div class="ribbonmenu z-index-ribbonmenu">
         <div class="celltitle" id="head_weapon">武器</div>
-        <p><select v-model="selectedSeries">
-          <option v-for="seriesName in seriesNames">{{ seriesName }}</option>
-        </select></p>
-        <p><select>
-          <option v-for="modelName in modelNames">{{ modelName }}</option>
-        </select></p>
+        <p>
+          <select v-model="selectedSeries">
+            <option v-for="seriesName in seriesNames">{{ seriesName }}</option>
+          </select>
+        </p>
+        <p>
+          <select>
+            <option v-for="modelName in modelNames">{{ modelName }}</option>
+          </select>
+        </p>
         <p><button v-on:click="addWeapon">追加</button></p>
       </div>
     </div>
-    <MinimapImg v-bind:map-locate="mapLocation" v-bind:map-type="mapType"/>
+    <MinimapImg v-bind:map-locate="mapLocation" v-bind:map-type="mapType" />
   </div>
 </template>
 
 <script setup lang="ts">
-import MinimapImg from '@/components/MinimapImg.vue';
-import { computed, ref, type Ref } from 'vue';
-import { SeriesFactory, type SeriesName } from './weapon-on-minimap/weapon-factory';
-import type { WeaponOnMinimap } from './weapon-on-minimap/weapon-on-minimap';
+import MinimapImg from "@/components/MinimapImg.vue";
+import { computed, ref, type Ref } from "vue";
+import { SeriesFactory, type SeriesName } from "./weapons/weapon-factory";
 
 const mapLocation = ref("第3採掘島");
 const mapType = ref("夕暮れの戦火");
 
-const selectedSeries:Ref<SeriesName> = ref("索敵センサー");
+const selectedSeries: Ref<SeriesName> = ref("索敵センサー");
 const seriesNames = SeriesFactory.seriesNames;
-const modelNames = computed (
-  ():readonly string[] =>{
-    const series = new SeriesFactory();
-    return series.create(selectedSeries.value).modelNames;
-  }
-)
+const modelNames = computed((): readonly string[] => {
+  const series = new SeriesFactory();
+  return series.create(selectedSeries.value).modelNames;
+});
 // head_weaponに武器をあれこれする責務がある
-const addWeapon = ():void => {
-  // 
-}
+const addWeapon = (): void => {
+  //
+};
 </script>
-
 
 <style scoped>
 header {
   line-height: 1.5;
   max-height: 100vh;
 }
-div.ribbonmenu{
-    overflow:hidden;
-    -webkit-box-shadow:0px 2px 4px gray;
-    box-shadow:0px 2px 4px gray;
+div.ribbonmenu {
+  overflow: hidden;
+  -webkit-box-shadow: 0px 2px 4px gray;
+  box-shadow: 0px 2px 4px gray;
 
-    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxsaW5lYXJHcmFkaWVudCBpZD0iZzEiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjRkZGRkZGIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRjBGMEYwIi8+PC9saW5lYXJHcmFkaWVudD48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cxKSIgLz48L3N2Zz4=");
-    background-image:-webkit-gradient(linear, center top, center bottom, color-stop(0%, #FFFFFF), color-stop(100%, #F0F0F0));
-    background-image:linear-gradient(to bottom, #FFFFFF, #F0F0F0);
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxsaW5lYXJHcmFkaWVudCBpZD0iZzEiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjRkZGRkZGIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRjBGMEYwIi8+PC9saW5lYXJHcmFkaWVudD48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cxKSIgLz48L3N2Zz4=");
+  background-image: -webkit-gradient(
+    linear,
+    center top,
+    center bottom,
+    color-stop(0%, #ffffff),
+    color-stop(100%, #f0f0f0)
+  );
+  background-image: linear-gradient(to bottom, #ffffff, #f0f0f0);
 }
 
-div.ribbonmenu > div.menucell:first-child{
-    border-left:none;
+div.ribbonmenu > div.menucell:first-child {
+  border-left: none;
 }
 
-div.ribbonmenu > div.menucell:last-child{
-    border-right:none;
+div.ribbonmenu > div.menucell:last-child {
+  border-right: none;
 }
 
-div.ribbonmenu div.menucell{
-    float:left;
-    position:relative;
-    vertical-align: top;
-    overflow: hidden;
-    border-right:1px solid gainsboro;
-    border-left:1px solid white;
+div.ribbonmenu div.menucell {
+  float: left;
+  position: relative;
+  vertical-align: top;
+  overflow: hidden;
+  border-right: 1px solid gainsboro;
+  border-left: 1px solid white;
 }
 
-div.ribbonmenu div.menucell:hover{
-    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSJ3aGl0ZSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0icmdiYSgyMjQsIDIyNCwgMjI0LCAwKSIvPjwvcmFkaWFsR3JhZGllbnQ+PHJlY3QgeD0iMCUiIHk9IjAlIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJyZ2JhKDIyNCwgMjI0LCAyMjQsIDApIiAvPjxyZWN0IHg9Ii0yMC43MTA3JSIgeT0iLTQxLjQyMTQlIiB3aWR0aD0iMTQxLjQyMTQlIiBoZWlnaHQ9IjI4Mi44NDI3JSIgZmlsbD0idXJsKCNnKSIgLz48L3N2Zz4=");
-    background-image:-webkit-radial-gradient(bottom center, ellipse farthest-corner,
-                                             white 0%, rgba(224, 224,224, 0) 100%);
-    background-image:radial-gradient(ellipse farthest-corner at bottom center,
-                                     white 0%, rgba(224,224,224,0) 100%);
+div.ribbonmenu div.menucell:hover {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSJ3aGl0ZSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0icmdiYSgyMjQsIDIyNCwgMjI0LCAwKSIvPjwvcmFkaWFsR3JhZGllbnQ+PHJlY3QgeD0iMCUiIHk9IjAlIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJyZ2JhKDIyNCwgMjI0LCAyMjQsIDApIiAvPjxyZWN0IHg9Ii0yMC43MTA3JSIgeT0iLTQxLjQyMTQlIiB3aWR0aD0iMTQxLjQyMTQlIiBoZWlnaHQ9IjI4Mi44NDI3JSIgZmlsbD0idXJsKCNnKSIgLz48L3N2Zz4=");
+  background-image: -webkit-radial-gradient(
+    bottom center,
+    ellipse farthest-corner,
+    white 0%,
+    rgba(224, 224, 224, 0) 100%
+  );
+  background-image: radial-gradient(
+    ellipse farthest-corner at bottom center,
+    white 0%,
+    rgba(224, 224, 224, 0) 100%
+  );
 }
 
-div.ribbonmenu div.menucell div.celltitle{
-    position:absolute;
-    top:100%;
-    width:100%;
-    height: 1.5em;
-    margin-top: -1.5em;
-    text-align:center;
+div.ribbonmenu div.menucell div.celltitle {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  height: 1.5em;
+  margin-top: -1.5em;
+  text-align: center;
 }
 
 div.ribbonmenu div.selector {
-    cursor:default;
+  cursor: default;
 }
 
-div.ribbonmenu div.selector div.option{
-    border:1px solid transparent;
-    border-radius:5px;
+div.ribbonmenu div.selector div.option {
+  border: 1px solid transparent;
+  border-radius: 5px;
 }
 
-div.ribbonmenu div.selector div.option:hover{
-    border:1px solid rgb(255,212,102);
-    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxsaW5lYXJHcmFkaWVudCBpZD0iZzEiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMTAwJSIgeTE9IjEwMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0icmdiYSgyNTUsIDIxNSwgMTA0LCAwLjIpIi8+PHN0b3Agb2Zmc2V0PSIwLjgiIHN0b3AtY29sb3I9InJnYmEoMjU1LCAyMTUsIDEwNCwgMC41KSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0icmdiYSgyNTUsIDIxNSwgMTA0LCAwLjMpIi8+PC9saW5lYXJHcmFkaWVudD48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cxKSIgLz48L3N2Zz4=");
-    background-image: -webkit-gradient(linear, center bottom, center top, color-stop(0%, rgba(255, 215, 104, 0.2)), color-stop(80%, rgba(255, 215, 104, 0.5)), color-stop(100%, rgba(255, 215, 104, 0.3)));
-    background-image: linear-gradient(to top, rgba(255, 215, 104, 0.2) 0%, rgba(255, 215, 104, 0.5) 80%, rgba(255, 215, 104, 0.3) 100%);
+div.ribbonmenu div.selector div.option:hover {
+  border: 1px solid rgb(255, 212, 102);
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxsaW5lYXJHcmFkaWVudCBpZD0iZzEiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMTAwJSIgeTE9IjEwMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0icmdiYSgyNTUsIDIxNSwgMTA0LCAwLjIpIi8+PHN0b3Agb2Zmc2V0PSIwLjgiIHN0b3AtY29sb3I9InJnYmEoMjU1LCAyMTUsIDEwNCwgMC41KSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0icmdiYSgyNTUsIDIxNSwgMTA0LCAwLjMpIi8+PC9saW5lYXJHcmFkaWVudD48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cxKSIgLz48L3N2Zz4=");
+  background-image: -webkit-gradient(
+    linear,
+    center bottom,
+    center top,
+    color-stop(0%, rgba(255, 215, 104, 0.2)),
+    color-stop(80%, rgba(255, 215, 104, 0.5)),
+    color-stop(100%, rgba(255, 215, 104, 0.3))
+  );
+  background-image: linear-gradient(
+    to top,
+    rgba(255, 215, 104, 0.2) 0%,
+    rgba(255, 215, 104, 0.5) 80%,
+    rgba(255, 215, 104, 0.3) 100%
+  );
 }
 
-div.ribbonmenu div.selector div.option.selected{
-    border:1px solid rgb(228,184,63);
-    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxsaW5lYXJHcmFkaWVudCBpZD0iZzEiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMTAwJSIgeTE9IjEwMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0icmdiYSgyNTUsIDIxNSwgOTMsIDAuMykiLz48c3RvcCBvZmZzZXQ9IjAuNyIgc3RvcC1jb2xvcj0icmdiYSgyNTUsIDIxNSwgOTMsIDAuOCkiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9InJnYmEoMjU1LCAyMTUsIDkzLCAwLjUpIi8+PC9saW5lYXJHcmFkaWVudD48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cxKSIgLz48L3N2Zz4=");
-    background-image: -webkit-gradient(linear, center bottom, center top, color-stop(0%, rgba(255, 215, 93, 0.3)), color-stop(70%, rgba(255, 215, 93, 0.8)), color-stop(100%, rgba(255, 215, 93, 0.5)));
-    background-image: linear-gradient(to top, rgba(255, 215, 93, 0.3) 0%, rgba(255, 215, 93, 0.8) 70%, rgba(255, 215, 93, 0.5) 100%);
+div.ribbonmenu div.selector div.option.selected {
+  border: 1px solid rgb(228, 184, 63);
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxsaW5lYXJHcmFkaWVudCBpZD0iZzEiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMTAwJSIgeTE9IjEwMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0icmdiYSgyNTUsIDIxNSwgOTMsIDAuMykiLz48c3RvcCBvZmZzZXQ9IjAuNyIgc3RvcC1jb2xvcj0icmdiYSgyNTUsIDIxNSwgOTMsIDAuOCkiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9InJnYmEoMjU1LCAyMTUsIDkzLCAwLjUpIi8+PC9saW5lYXJHcmFkaWVudD48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cxKSIgLz48L3N2Zz4=");
+  background-image: -webkit-gradient(
+    linear,
+    center bottom,
+    center top,
+    color-stop(0%, rgba(255, 215, 93, 0.3)),
+    color-stop(70%, rgba(255, 215, 93, 0.8)),
+    color-stop(100%, rgba(255, 215, 93, 0.5))
+  );
+  background-image: linear-gradient(
+    to top,
+    rgba(255, 215, 93, 0.3) 0%,
+    rgba(255, 215, 93, 0.8) 70%,
+    rgba(255, 215, 93, 0.5) 100%
+  );
 }
 
 div.ribbonmenu button {
-    display:inline-block;
-    padding:3px;
-    border:1px solid gainsboro;
-    border-radius:5px;
-    cursor:default;
-    margin:2px;
+  display: inline-block;
+  padding: 3px;
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+  cursor: default;
+  margin: 2px;
 }
 
 div.ribbonmenu button:enabled:hover {
-    border:1px solid rgb(255,183,0);
-    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxsaW5lYXJHcmFkaWVudCBpZD0iZzEiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMTAwJSIgeTE9IjEwMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0icmdiYSgyNTUsIDIwNiwgMTA0LCAwLjIpIi8+PHN0b3Agb2Zmc2V0PSIwLjgiIHN0b3AtY29sb3I9InJnYmEoMjU1LCAyMDYsIDEwNCwgMC41KSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0icmdiYSgyNTUsIDIwNiwgMTA0LCAwLjMpIi8+PC9saW5lYXJHcmFkaWVudD48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cxKSIgLz48L3N2Zz4=");
-    background-image: -webkit-gradient(linear, center bottom, center top, color-stop(0%, rgba(255, 206, 104, 0.2)), color-stop(80%, rgba(255, 206, 104, 0.5)), color-stop(100%, rgba(255, 206, 104, 0.3)));
-    background-image: linear-gradient(to top, rgba(255, 206, 104, 0.2) 0%, rgba(255, 206, 104, 0.5) 80%, rgba(255, 206, 104, 0.3) 100%);
+  border: 1px solid rgb(255, 183, 0);
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxsaW5lYXJHcmFkaWVudCBpZD0iZzEiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMTAwJSIgeTE9IjEwMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0icmdiYSgyNTUsIDIwNiwgMTA0LCAwLjIpIi8+PHN0b3Agb2Zmc2V0PSIwLjgiIHN0b3AtY29sb3I9InJnYmEoMjU1LCAyMDYsIDEwNCwgMC41KSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0icmdiYSgyNTUsIDIwNiwgMTA0LCAwLjMpIi8+PC9saW5lYXJHcmFkaWVudD48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cxKSIgLz48L3N2Zz4=");
+  background-image: -webkit-gradient(
+    linear,
+    center bottom,
+    center top,
+    color-stop(0%, rgba(255, 206, 104, 0.2)),
+    color-stop(80%, rgba(255, 206, 104, 0.5)),
+    color-stop(100%, rgba(255, 206, 104, 0.3))
+  );
+  background-image: linear-gradient(
+    to top,
+    rgba(255, 206, 104, 0.2) 0%,
+    rgba(255, 206, 104, 0.5) 80%,
+    rgba(255, 206, 104, 0.3) 100%
+  );
 }
 
 div.ribbonmenu button:disabled {
-    color: gainsboro;
-    text-shadow: 1px 1px 0 rgba(255, 255, 255, 1);
+  color: gainsboro;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 1);
 }
 
-.wrap{
-  display:flex;
+.wrap {
+  display: flex;
 }
 </style>
