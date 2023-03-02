@@ -14,7 +14,7 @@ export class SensorFactory implements ModelFactory{
         "新型索敵センサー",
     ] as const;
     get modelNames():readonly string[] {
-        return SensorFactory.modelNames;
+        return this.modelNames;
     }
     create = (modelName:typeof SensorFactory.modelNames[number]):WeaponOnMinimap => {
         switch(modelName){
