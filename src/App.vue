@@ -1,23 +1,6 @@
 <template>
   <div>
     <div class="wrap">
-      <div class="ribbonmenu z-index-ribbonmenu">
-        <div class="celltitle" id="head_map">マップ</div>
-        <div>
-          <p>
-            <select v-model="mapLocation">
-              <option>第3採掘島</option>
-              <option>第3採掘島あ</option>
-            </select>
-          </p>
-          <p>
-            <select v-model="mapType">
-              <option>夕暮れの戦火</option>
-              <option>臨海決戦</option>
-            </select>
-          </p>
-        </div>
-      </div>
       <!-- 武器をコンポーネントにまとめた方がよい？ -->
       <div class="ribbonmenu z-index-ribbonmenu">
         <div class="celltitle" id="head_weapon">武器</div>

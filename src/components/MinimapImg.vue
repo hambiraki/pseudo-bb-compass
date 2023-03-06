@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { WeaponOnMinimap, Location } from "@/weapons/weapon-on-minimap";
+import { WeaponOnMinimap, Coordinates } from "@/weapons/weapon-on-minimap";
 import { computed, watch, ref } from "vue";
 import type { Ref } from "vue";
 import { Length } from "@/units";
@@ -49,7 +49,7 @@ const setActiveWeapon = (event: MouseEvent): void => {
     return;
   }
   const rect = canvas.getBoundingClientRect();
-  const point = new Location(
+  const point = new Coordinates(
     Length.byPixel(event.clientX - rect.left),
     Length.byPixel(event.clientY - rect.top)
   );
@@ -73,7 +73,7 @@ const transform = (event: MouseEvent): void => {
     return;
   }
   const rect = canvas.getBoundingClientRect();
-  const point = new Location(
+  const point = new Coordinates(
     Length.byPixel(event.clientX - rect.left),
     Length.byPixel(event.clientY - rect.top)
   );
