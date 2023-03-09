@@ -1,8 +1,8 @@
 <template>
   <canvas
     id="minimap"
-    v-bind:width="canvasSquareSideLength"
-    v-bind:height="canvasSquareSideLength"
+    v-bind:width="canvasSquareSideLength.pixel"
+    v-bind:height="canvasSquareSideLength.pixel"
     v-on:mousedown="setActiveWeapon"
     v-on:mousemove="transform"
     v-on:mouseup="clearActiveWeapon"
@@ -12,15 +12,10 @@
 
 <script setup lang="ts">
 import { WeaponOnMinimap, Coordinates } from "@/weapons/weapon-on-minimap";
-import { computed, watch, ref } from "vue";
+import { computed, watch, ref, inject, type InjectionKey, provide } from "vue";
 import type { Ref } from "vue";
 import { Length } from "@/units";
-
-interface Props {
-  mapLocate: string;
-  mapType: string;
-}
-const props = defineProps<Props>();
+import { selectedMapKey } from "./SelectMap.vue";
 
 // サイズ決め定数
 const originalXStart = 562; // sx             (元画像の切り抜き始点X)
@@ -31,8 +26,10 @@ const canvasYStart = 0; // dy          (Canvasの描画開始位置Y)
 /** Canvasの描画サイズdWidth,dHeight
  * 画面の幅と高さの小さい方
  */
-const canvasSquareSideLength = computed((): number => {
-  return Math.min(window.innerWidth * 0.9, window.innerHeight * 0.7);
+const canvasSquareSideLength = computed((): Length => {
+  return Length.byPixel(
+    Math.min(window.innerWidth * 0.9, window.innerHeight * 0.7)
+  );
 });
 const weapons: WeaponOnMinimap[] = [];
 const activeWeapon: Ref<WeaponOnMinimap | null> = ref(null);
@@ -61,17 +58,11 @@ const setActiveWeapon = (event: MouseEvent): void => {
   }
 };
 const transform = (event: MouseEvent): void => {
-  if (activeWeapon.value == null) {
-    return;
-  }
+  if (activeWeapon.value == null) return;
   const canvas = document.getElementById("minimap");
-  if (!(canvas instanceof HTMLCanvasElement)) {
-    return;
-  }
+  if (!(canvas instanceof HTMLCanvasElement)) return;
   const ctx = getMapCanvasContext();
-  if (ctx === null) {
-    return;
-  }
+  if (ctx === null) return;
   const rect = canvas.getBoundingClientRect();
   const point = new Coordinates(
     Length.byPixel(event.clientX - rect.left),
@@ -85,18 +76,6 @@ const clearActiveWeapon = (): void => {
   activeWeapon.value = null;
 };
 
-// url用定数
-const locationBaseUrl = "https://ps4.borderbreak.com/data/location";
-const minimapIndex = "sub_6.jpg";
-
-const minimapImage = computed((): HTMLImageElement => {
-  const image = new Image();
-  image.alt = `${props.mapLocate}～${props.mapType}～`;
-  const rawUrl = `${locationBaseUrl}/${props.mapLocate}/${props.mapType}/${minimapIndex}`;
-  image.src = encodeURI(rawUrl);
-  return image;
-});
-
 const getMapCanvasContext = (): CanvasRenderingContext2D | null => {
   const canvas = document.getElementById("minimap");
   if (!(canvas instanceof HTMLCanvasElement)) {
@@ -105,32 +84,29 @@ const getMapCanvasContext = (): CanvasRenderingContext2D | null => {
   return canvas.getContext("2d");
 };
 
+const selectedMap = inject(selectedMapKey);
+
 const draw = (): void => {
   const ctx = getMapCanvasContext();
-  if (ctx === null) {
-    return;
-  }
+  if (ctx === null) return;
   ctx.clearRect(
     0,
     0,
-    canvasSquareSideLength.value,
-    canvasSquareSideLength.value
+    canvasSquareSideLength.value.pixel,
+    canvasSquareSideLength.value.pixel
   );
-  ctx.drawImage(
-    minimapImage.value,
-    originalXStart,
-    originalYStart,
-    originalSquareSideLength,
-    originalSquareSideLength,
-    canvasXStart,
-    canvasYStart,
-    canvasSquareSideLength.value,
-    canvasSquareSideLength.value
-  );
+  if (selectedMap !== undefined) {
+    selectedMap.draw(ctx, canvasSquareSideLength.value);
+  }
   for (const weapon of weapons) {
     weapon.draw(ctx);
   }
 };
-minimapImage.value.onload = draw;
-watch(minimapImage, draw);
+provide(drawKey, draw);
+setTimeout(draw, 1000);
+// selectedMap.onload = draw;
+// watch(selectedMap, draw);
+</script>
+<script lang="ts">
+export const drawKey: InjectionKey<() => void> = Symbol();
 </script>

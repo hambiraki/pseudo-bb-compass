@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="wrap">
+      <SelectMap />
       <!-- 武器をコンポーネントにまとめた方がよい？ -->
+      <!-- その辺を3/8実装 -->
       <div class="ribbonmenu z-index-ribbonmenu">
         <div class="celltitle" id="head_weapon">武器</div>
         <p>
@@ -17,17 +19,17 @@
         <p><button v-on:click="addWeapon">追加</button></p>
       </div>
     </div>
-    <MinimapImg v-bind:map-locate="mapLocation" v-bind:map-type="mapType" />
+    <!-- この辺は3/9実装 -->
+    <MinimapImg />
   </div>
+  <!-- 3/10は動作確認 早く寝る -->
 </template>
 
 <script setup lang="ts">
 import MinimapImg from "@/components/MinimapImg.vue";
 import { computed, ref, type Ref } from "vue";
 import { SeriesFactory, type SeriesName } from "./weapons/weapon-factory";
-
-const mapLocation = ref("第3採掘島");
-const mapType = ref("夕暮れの戦火");
+import SelectMap from "@/components/SelectMap.vue";
 
 const selectedSeries: Ref<SeriesName> = ref("索敵センサー");
 const seriesNames = SeriesFactory.seriesNames;

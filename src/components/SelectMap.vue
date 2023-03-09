@@ -28,24 +28,46 @@ import {
   type MapSituation,
 } from "@/maps/map-names";
 import { assert } from "@vue/compiler-core";
-import { computed, ref, type Ref } from "vue";
+import {
+  computed,
+  provide,
+  ref,
+  type InjectionKey,
+  type Ref,
+  readonly,
+  watch,
+  inject,
+} from "vue";
+import { drawKey } from "./MinimapImg.vue";
 
-const location: Ref<MapLocation | undefined> = ref(undefined);
-const locations = location2situation.keys();
-const situation: Ref<MapSituation | undefined> = ref(undefined);
+const locations = computed((): Array<MapLocation> => {
+  return Array.from(location2situation.keys());
+});
+const location: Ref<MapLocation> = ref("スカービ渓谷");
 const situations = computed((): ReadonlyArray<MapSituation> => {
-  if (location.value === undefined) return [] as const;
   const situations = location2situation.get(location.value);
   assert(situations !== undefined);
   if (situations === undefined) throw Error;
   return situations;
 });
+const situation: Ref<MapSituation> = ref("戦線突破");
+watch(location, (): void => {
+  situation.value = situations.value[0];
+});
 
-const selectedMapField = computed((): MapField | undefined => {
-  if (location.value === undefined) return undefined;
-  if (situation.value === undefined) return undefined;
+const selectedMapField = computed((): MapField => {
   assert(situations.value === location2situation.get(location.value));
   assert(situations.value.includes(situation.value));
   return new MapField(location.value, situation.value);
 });
+provide(selectedMapKey, readonly(selectedMapField.value));
+const drawAll = inject(drawKey);
+watch(situation, (): void => {
+  if (drawAll === undefined) return;
+  drawAll();
+});
+</script>
+
+<script lang="ts">
+export const selectedMapKey: InjectionKey<MapField> = Symbol();
 </script>
