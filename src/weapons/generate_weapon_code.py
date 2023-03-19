@@ -53,9 +53,9 @@ def to_kebab_case(weapon_name: str) -> str:
 
 def generate_import() -> list[str]:
     return [
-        'import { Length } from "@/units";',
+        'import { Coordinates, Length, Angle,type Time } from "@/units";',
         'import { WeaponOnMinimap } from "./weapon-on-minimap";',
-        'import type { Coordinates, Rotation, Area } from "./weapon-on-minimap";',
+        'import type { Area } from "./weapon-on-minimap";',
         'import type { ModelFactory } from "./weapon-factory";',
     ]
 
@@ -63,53 +63,53 @@ def generate_import() -> list[str]:
 def generate_factory(variable_name: str, models: list[str]) -> list[str]:
     return (
         [
-            " /**",
-            "  * @package",
-            "  */",
-            f" export class {variable_name}Factory implements ModelFactory{{",
-            "     static readonly modelNames = [",
+            "/**",
+            " * @package",
+            " */",
+            f"export class {variable_name}Factory implements ModelFactory{{",
+            "    static readonly modelNames = [",
         ]
-        + [f'         "{model}",' for model in models]
+        + [f'        "{model}",' for model in models]
         + [
-            "     ] as const;",
-            "     get modelNames():readonly string[] {",
-            f"         return {variable_name}Factory.modelNames;",
-            "     }",
-            f"     create = (modelName:typeof {variable_name}Factory.modelNames[number]):WeaponOnMinimap => {{",
-            "         switch(modelName){",
+            "    ] as const;",
+            "    get modelNames():readonly string[] {",
+            f"        return {variable_name}Factory.modelNames;",
+            "    }",
+            f"    create = (modelName:typeof {variable_name}Factory.modelNames[number]):WeaponOnMinimap => {{",
+            "        switch(modelName){",
         ]
         + sum(
             [
                 [
-                    f'             case "{model}":',
-                    f"                 return new WeaponOnMinimap(new {variable_name}());",
+                    f'            case "{model}":',
+                    f"                return new WeaponOnMinimap(new {variable_name}());",
                 ]
                 for model in models
             ],
             [],
         )
         + [
-            "         }",
-            "     }",
-            " }",
+            "        }",
+            "    }",
+            "}",
         ]
     )
 
 
 def generate_figure(variable_name: str, series: str) -> list[str]:
     return [
-        f" // {series}系統",
-        f" class {variable_name} implements Area{{",
-        "     constructor(){};",
-        "     whole = (location:Coordinates, rotation:Rotation):Path2D => {",
-        "         const area = new Path2D();",
+        f"// {series}系統",
+        f"class {variable_name} implements Area{{",
+        "    constructor(){};",
+        "    whole = (location:Coordinates, rotation:Angle):Path2D => {",
+        "        const area = new Path2D();",
         "",
-        "         return area;",
-        "     };",
-        "     at = (location:Coordinates, rotation:Rotation, secTime: number): Path2D =>{",
+        "        return area;",
+        "    };",
+        "    at = (location:Coordinates, rotation:Angle, time: Time): Path2D =>{",
         "",
-        "     };",
-        " }",
+        "    };",
+        "}",
     ]
 
 
@@ -119,39 +119,39 @@ def generate_weapon_factory() -> list[str]:
         file.write(
             "\n".join(
                 [
-                    f' import {{ {to_pascal_case(weapon[0])}Factory }} from "./{to_kebab_case(weapon[0])}";'
+                    f'import {{ {to_pascal_case(weapon[0])}Factory }} from "./{to_kebab_case(weapon[0])}";'
                     for weapon in weapons
                 ]
                 + [
-                    ' import type { WeaponOnMinimap } from "./weapon-on-minimap";',
-                    " export interface ModelFactory{",
-                    "     get modelNames():readonly string[];",
-                    "     create(modelName:string):WeaponOnMinimap;",
-                    " }",
-                    " export type SeriesName = typeof SeriesFactory.seriesNames[number];",
-                    " export class SeriesFactory{",
-                    "     static readonly seriesNames = [",
+                    'import type { WeaponOnMinimap } from "./weapon-on-minimap";',
+                    "export interface ModelFactory{",
+                    "    get modelNames():readonly string[];",
+                    "    create(modelName:string):WeaponOnMinimap;",
+                    "}",
+                    "export type SeriesName = typeof SeriesFactory.seriesNames[number];",
+                    "export class SeriesFactory{",
+                    "    static readonly seriesNames = [",
                 ]
-                + [f'         "{weapon[1]}",' for weapon in weapons]
+                + [f'        "{weapon[1]}",' for weapon in weapons]
                 + [
-                    "     ] as const;",
-                    "     create = (seriesName:SeriesName):ModelFactory => {",
-                    "         switch(seriesName){",
+                    "    ] as const;",
+                    "    create = (seriesName:SeriesName):ModelFactory => {",
+                    "        switch(seriesName){",
                 ]
                 + sum(
                     [
                         [
-                            f'             case "{weapon[1]}":',
-                            f"                 return new {to_pascal_case(weapon[0])}Factory();",
+                            f'            case "{weapon[1]}":',
+                            f"                return new {to_pascal_case(weapon[0])}Factory();",
                         ]
                         for weapon in weapons
                     ],
                     [],
                 )
                 + [
-                    "         }",
-                    "     }",
-                    " }",
+                    "        }",
+                    "    }",
+                    "}",
                 ]
             )
         )
