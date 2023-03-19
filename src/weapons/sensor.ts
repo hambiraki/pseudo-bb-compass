@@ -1,6 +1,7 @@
-import { Length } from "@/units";
+import { makeCircle } from "./figures";
+import { Coordinates, Length, Angle,type Time } from "@/units";
 import { WeaponOnMinimap } from "./weapon-on-minimap";
-import type { Coordinates, Rotation, Area } from "./weapon-on-minimap";
+import type { Area } from "./weapon-on-minimap";
 import type { ModelFactory } from "./weapon-factory";
 
 /**
@@ -32,17 +33,13 @@ export class SensorFactory implements ModelFactory{
 
 // 索敵センサー系統
 class Sensor implements Area{
-    constructor(private readonly radius: Length){};
-    whole = (location:Coordinates, rotation:Rotation):Path2D => {
-        const area = new Path2D();
-        area.moveTo( location.x.pixel+this.radius.pixel , location.y.pixel );
-        area.arc(
-            location.x.pixel,location.y.pixel,
-            this.radius.pixel,
-            0, 2 * Math.PI);
-        return area;
+    constructor(
+        private readonly radius: Length
+    ){};
+    whole = (location:Coordinates, rotation:Angle):Path2D => {
+        return makeCircle(location,this.radius)
     };
-    at = (location:Coordinates, rotation:Rotation, msecTime: number): Path2D =>{
+    at = (location:Coordinates, rotation:Angle, time: Time): Path2D =>{
         return this.whole(location,rotation);
     };
 }

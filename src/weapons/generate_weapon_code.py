@@ -22,6 +22,7 @@ weapons = [
 def main() -> None:
     for weapon in weapons:
         generate_a_weapon_code(weapon)
+    generate_weapon_factory()
 
 
 def generate_a_weapon_code(weapon: list[str, str, list[str]]) -> None:
@@ -105,11 +106,55 @@ def generate_figure(variable_name: str, series: str) -> list[str]:
         "",
         "         return area;",
         "     };",
-        "     at = (location:Coordinates, rotation:Rotation, msecTime: number): Path2D =>{",
+        "     at = (location:Coordinates, rotation:Rotation, secTime: number): Path2D =>{",
         "",
         "     };",
         " }",
     ]
+
+
+def generate_weapon_factory() -> list[str]:
+    filepath = path.dirname(__file__)
+    with open(f"{filepath}\\weapon-factory.ts", mode="w", encoding="utf-8") as file:
+        file.write(
+            "\n".join(
+                [
+                    f' import {{ {to_pascal_case(weapon[0])}Factory }} from "./{to_kebab_case(weapon[0])}";'
+                    for weapon in weapons
+                ]
+                + [
+                    ' import type { WeaponOnMinimap } from "./weapon-on-minimap";',
+                    " export interface ModelFactory{",
+                    "     get modelNames():readonly string[];",
+                    "     create(modelName:string):WeaponOnMinimap;",
+                    " }",
+                    " export type SeriesName = typeof SeriesFactory.seriesNames[number];",
+                    " export class SeriesFactory{",
+                    "     static readonly seriesNames = [",
+                ]
+                + [f'         "{weapon[1]}",' for weapon in weapons]
+                + [
+                    "     ] as const;",
+                    "     create = (seriesName:SeriesName):ModelFactory => {",
+                    "         switch(seriesName){",
+                ]
+                + sum(
+                    [
+                        [
+                            f'             case "{weapon[1]}":',
+                            f"                 return new {to_pascal_case(weapon[0])}Factory();",
+                        ]
+                        for weapon in weapons
+                    ],
+                    [],
+                )
+                + [
+                    "         }",
+                    "     }",
+                    " }",
+                ]
+            )
+        )
 
 
 if __name__ == "__main__":

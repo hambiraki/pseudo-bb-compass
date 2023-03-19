@@ -64,10 +64,10 @@ export class WeaponOnMinimap {
   };
   readonly animate = (
     ctx: CanvasRenderingContext2D,
-    msecTime: number
+    secTime: number
   ): void => {
     ctx.fillStyle = AREA_COLOR;
-    ctx.fill(this.area.at(this.location, this.rotation, msecTime));
+    ctx.fill(this.area.at(this.location, this.rotation, secTime));
     ctx.fillStyle = CENTER_POINT_COLOR;
     ctx.fill(this.centerPoint);
   };
@@ -75,7 +75,7 @@ export class WeaponOnMinimap {
 
 export interface Area {
   whole(location: Coordinates, rotation: Rotation): Path2D;
-  at(location: Coordinates, rotation: Rotation, msecTime: number): Path2D;
+  at(location: Coordinates, rotation: Rotation, secTime: number): Path2D;
 }
 
 export class Coordinates {
