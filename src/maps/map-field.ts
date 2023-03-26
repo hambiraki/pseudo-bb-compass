@@ -21,8 +21,8 @@ export class MapField {
       originalSquareSideLength,
       canvasXStart,
       canvasYStart,
-      minimapLength.pixel,
-      minimapLength.pixel,
+      minimapLength.px,
+      minimapLength.px,
     );
   };
 }

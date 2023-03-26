@@ -1,4 +1,4 @@
-import { Length } from "@/units";
+import { Coordinates, Length, Angle, Time } from "@/units";
 
 const CENTER_POINT_COLOR = "rgba(255,255,255,1)";
 const AREA_COLOR = "rgba(255,0,0,0.3)";
@@ -6,13 +6,13 @@ const AREA_COLOR = "rgba(255,0,0,0.3)";
 export class WeaponOnMinimap {
   constructor(readonly area: Area) {}
   location = new Coordinates(Length.byPixel(0), Length.byPixel(0));
-  rotation = new Rotation();
+  rotation = Angle.byRadian(0);
   private get centerPoint(): Path2D {
     const centerPoint = new Path2D();
     centerPoint.arc(
-      this.location.x.pixel,
-      this.location.y.pixel,
-      Length.byMeter(25).pixel,
+      this.location.x.px,
+      this.location.y.px,
+      Length.byMeter(25).px,
       0,
       2 * Math.PI
     );
@@ -25,34 +25,27 @@ export class WeaponOnMinimap {
     return (
       ctx.isPointInPath(
         this.area.whole(this.location, this.rotation),
-        point.x.pixel,
-        point.y.pixel
-      ) || ctx.isPointInPath(this.centerPoint, point.x.pixel, point.y.pixel)
+        point.x.px,
+        point.y.px
+      ) || ctx.isPointInPath(this.centerPoint, point.x.px, point.y.px)
     );
   };
   readonly transform = (
     ctx: CanvasRenderingContext2D,
     point: Coordinates
   ): void => {
-    if (ctx.isPointInPath(this.centerPoint, point.x.pixel, point.y.pixel)) {
-      this.location.moveTo(point.x, point.y);
+    if (ctx.isPointInPath(this.centerPoint, point.x.px, point.y.px)) {
+      this.location = point;
       return;
     }
     if (
       ctx.isPointInPath(
         this.area.whole(this.location, this.rotation),
-        point.x.pixel,
-        point.y.pixel
+        point.x.px,
+        point.y.px
       )
     ) {
-      this.rotation.rotateTo(
-        Math.atan(
-          Length.division(
-            Length.subtraction(this.location.x, point.x),
-            Length.subtraction(this.location.y, point.y)
-          )
-        )
-      );
+      this.rotation = point.minus(this.location).argument
       return;
     }
   };
@@ -64,42 +57,21 @@ export class WeaponOnMinimap {
   };
   readonly animate = (
     ctx: CanvasRenderingContext2D,
-    secTime: number
+    time: Time
   ): void => {
     ctx.fillStyle = AREA_COLOR;
-    ctx.fill(this.area.at(this.location, this.rotation, secTime));
+    ctx.fill(this.area.at(this.location, this.rotation, time));
     ctx.fillStyle = CENTER_POINT_COLOR;
     ctx.fill(this.centerPoint);
   };
 }
 
+/**
+ * @package
+ */
 export interface Area {
-  whole(location: Coordinates, rotation: Rotation): Path2D;
-  at(location: Coordinates, rotation: Rotation, secTime: number): Path2D;
+  whole(location: Coordinates, rotation: Angle): Path2D;
+  at(location: Coordinates, rotation: Angle, time:Time): Path2D;
 }
 
-export class Coordinates {
-  private _x: Length;
-  private _y: Length;
-  constructor(x: Length, y: Length) {
-    this._x = x;
-    this._y = y;
-  }
-  get x(): Length {
-    return this._x;
-  }
-  get y(): Length {
-    return this._y;
-  }
-  moveTo = (x: Length, y: Length): void => {
-    this._x = x;
-    this._y = y;
-  };
-}
 
-export class Rotation {
-  angle = 0;
-  rotateTo = (radAngle: number): void => {
-    this.angle = radAngle;
-  };
-}

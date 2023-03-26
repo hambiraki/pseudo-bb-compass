@@ -1,8 +1,8 @@
 <template>
   <canvas
     id="minimap"
-    v-bind:width="canvasSquareSideLength.pixel"
-    v-bind:height="canvasSquareSideLength.pixel"
+    v-bind:width="canvasSquareSideLength.px"
+    v-bind:height="canvasSquareSideLength.px"
     v-on:mousedown="setActiveWeapon"
     v-on:mousemove="transform"
     v-on:mouseup="clearActiveWeapon"
@@ -11,10 +11,10 @@
 </template>
 
 <script setup lang="ts">
-import { WeaponOnMinimap, Coordinates } from "@/weapons/weapon-on-minimap";
+import type { WeaponOnMinimap } from "@/weapons/weapon-on-minimap";
 import { computed, watch, ref, inject, type InjectionKey, provide } from "vue";
 import type { Ref } from "vue";
-import { Length } from "@/units";
+import { Length, Coordinates } from "@/units";
 import { selectedMapKey } from "./SelectMap.vue";
 
 // サイズ決め定数
@@ -92,8 +92,8 @@ const draw = (): void => {
   ctx.clearRect(
     0,
     0,
-    canvasSquareSideLength.value.pixel,
-    canvasSquareSideLength.value.pixel
+    canvasSquareSideLength.value.px,
+    canvasSquareSideLength.value.px
   );
   if (selectedMap !== undefined) {
     selectedMap.draw(ctx, canvasSquareSideLength.value);

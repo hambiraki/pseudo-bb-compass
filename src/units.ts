@@ -90,4 +90,10 @@ export class Angle {
     get radian():number{
         return this.degree / 180 * Math.PI;
     }
+    get rightFace():Angle{
+        return new Angle(this.degree - 90);
+    }
+    get leftFace():Angle{
+        return new Angle(this.degree + 90);
+    }
 }

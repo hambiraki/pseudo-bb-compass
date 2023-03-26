@@ -1,39 +1,25 @@
-import { Length } from "@/units";
+import { Coordinates, Length, Angle,type Time } from "@/units";
 import { WeaponOnMinimap } from "./weapon-on-minimap";
-import type { Coordinates, Rotation, Area } from "./weapon-on-minimap";
-import type { ModelFactory } from "./weapon-factory";
- /**
-  * @package
-  */
- export class NdSensorFactory implements ModelFactory{
-     static readonly modelNames = [
-         "ND索敵センサー",
-         "小型ND索敵センサー",
-         "広域ND索敵センサー",
-     ] as const;
-     get modelNames():readonly string[] {
-         return NdSensorFactory.modelNames;
-     }
-     create = (modelName:typeof NdSensorFactory.modelNames[number]):WeaponOnMinimap => {
-         switch(modelName){
-             case "ND索敵センサー":
-                 return new WeaponOnMinimap(new NdSensor());
-             case "小型ND索敵センサー":
-                 return new WeaponOnMinimap(new NdSensor());
-             case "広域ND索敵センサー":
-                 return new WeaponOnMinimap(new NdSensor());
-         }
-     }
- }
- // ND索敵センサー系統
- class NdSensor implements Area{
-     constructor(){};
-     whole = (location:Coordinates, rotation:Rotation):Path2D => {
-         const area = new Path2D();
+import type { Area } from "./weapon-on-minimap";
 
-         return area;
-     };
-     at = (location:Coordinates, rotation:Rotation, msecTime: number): Path2D =>{
+// ND索敵センサー系統
+class NdSensor implements Area{
+    private readonly radius: Length;
+    constructor(status:{mRadius:number}){
+        this.radius = Length.byMeter(status.mRadius);
+    };
+    whole = (location:Coordinates, rotation:Angle):Path2D => {
+        const area = new Path2D();
 
-     };
- }
+        return area;
+    };
+    at = (location:Coordinates, rotation:Angle, time: Time): Path2D =>{
+
+    };
+}
+
+export const ndSensor = {
+    "ND索敵センサー": new WeaponOnMinimap(new NdSensor({mRadius:173})),
+    "小型ND索敵センサー": new WeaponOnMinimap(new NdSensor({mRadius:153})),
+    "広域ND索敵センサー": new WeaponOnMinimap(new NdSensor({mRadius:286})),
+};

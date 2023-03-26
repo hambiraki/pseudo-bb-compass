@@ -1,39 +1,28 @@
-import { Length } from "@/units";
+import { type Coordinates, Length, type Angle, Time } from "@/units";
 import { WeaponOnMinimap } from "./weapon-on-minimap";
-import type { Coordinates, Rotation, Area } from "./weapon-on-minimap";
-import type { ModelFactory } from "./weapon-factory";
- /**
-  * @package
-  */
- export class AgitatorFactory implements ModelFactory{
-     static readonly modelNames = [
-         "FJ－アジテーター",
-         "FJ－アジテーターC",
-         "FJ－ジャバウォック",
-     ] as const;
-     get modelNames():readonly string[] {
-         return AgitatorFactory.modelNames;
-     }
-     create = (modelName:typeof AgitatorFactory.modelNames[number]):WeaponOnMinimap => {
-         switch(modelName){
-             case "FJ－アジテーター":
-                 return new WeaponOnMinimap(new Agitator());
-             case "FJ－アジテーターC":
-                 return new WeaponOnMinimap(new Agitator());
-             case "FJ－ジャバウォック":
-                 return new WeaponOnMinimap(new Agitator());
-         }
-     }
- }
- // FJ－アジテーター系統
- class Agitator implements Area{
-     constructor(){};
-     whole = (location:Coordinates, rotation:Rotation):Path2D => {
-         const area = new Path2D();
+import type { Area } from "./weapon-on-minimap";
+import { makeCircle } from "./figures";
 
-         return area;
-     };
-     at = (location:Coordinates, rotation:Rotation, msecTime: number): Path2D =>{
+// FJ－アジテーター系統
+class Agitator implements Area{
+    private readonly radius: Length;
+    private readonly lifetime: Time;
+    constructor(status:Record<"mRadius"|"sLifetime", number>){
+        this.radius = Length.byMeter(status.mRadius);
+        this.lifetime = new Time(status.sLifetime)
+    };
+    whole = (location:Coordinates, rotation:Angle):Path2D => {
+        return makeCircle(location, this.radius);
+    };
+    at = (location:Coordinates, rotation:Angle, time: Time): Path2D =>{
+        if(time.s > this.lifetime.s) return new Path2D();
+        return this.whole(location, rotation);
+    };
 
-     };
- }
+}
+
+export const agitator = {
+    "FJ－アジテーター": new WeaponOnMinimap(new Agitator({mRadius:37.8, sLifetime:8.6})),
+    "FJ－アジテーターC": new WeaponOnMinimap(new Agitator({mRadius:32.7, sLifetime:9.8})),
+    "FJ－ジャバウォック": new WeaponOnMinimap(new Agitator({mRadius:44, sLifetime:14.3})),
+};
