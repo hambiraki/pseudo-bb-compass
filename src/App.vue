@@ -28,7 +28,6 @@
 <script setup lang="ts">
 import MinimapImg from "@/components/MinimapImg.vue";
 import { computed, ref, type Ref } from "vue";
-import { SeriesFactory, type SeriesName } from "./weapons/weapon-factory";
 import SelectMap from "@/components/SelectMap.vue";
 
 const selectedSeries: Ref<SeriesName> = ref("索敵センサー");

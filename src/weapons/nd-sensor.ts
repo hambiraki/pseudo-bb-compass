@@ -1,6 +1,6 @@
 import { Coordinates, Length, Angle,type Time } from "@/units";
-import { WeaponOnMinimap } from "./weapon-on-minimap";
-import type { Area } from "./weapon-on-minimap";
+import { makeLine, type Area } from "./utils";
+import { WeaponOnMinimap } from ".";
 
 // ND索敵センサー系統
 class NdSensor implements Area{
@@ -9,15 +9,16 @@ class NdSensor implements Area{
         this.radius = Length.byMeter(status.mRadius);
     };
     whole = (location:Coordinates, rotation:Angle):Path2D => {
-        const area = new Path2D();
-
-        return area;
+        return makeLine(location, this.radius, rotation);
     };
     at = (location:Coordinates, rotation:Angle, time: Time): Path2D =>{
-
+        return makeLine(location, this.radius, rotation);
     };
 }
 
+/**
+ * @package
+ */
 export const ndSensor = {
     "ND索敵センサー": new WeaponOnMinimap(new NdSensor({mRadius:173})),
     "小型ND索敵センサー": new WeaponOnMinimap(new NdSensor({mRadius:153})),

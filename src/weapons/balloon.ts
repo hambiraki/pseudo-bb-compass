@@ -1,7 +1,6 @@
 import { Coordinates, Length, Angle, Time } from "@/units";
-import { WeaponOnMinimap } from "./weapon-on-minimap";
-import type { Area } from "./weapon-on-minimap";
-import { makeCircle } from "./figures";
+import { makeCircle, type Area } from "./utils";
+import { WeaponOnMinimap } from ".";
 
 
 // 滞空索敵弾系統
@@ -21,6 +20,9 @@ class Balloon implements Area{
     };
 }
 
+/**
+ * @package
+ */
 export const balloon = {
     "滞空索敵弾": new WeaponOnMinimap(new Balloon({mRadius:76, sLifetime:50})),
     "小型滞空索敵弾": new WeaponOnMinimap(new Balloon({mRadius:65, sLifetime:60})),

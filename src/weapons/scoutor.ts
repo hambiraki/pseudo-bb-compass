@@ -3,9 +3,8 @@
  */
 
 import { Coordinates, Length, Angle, type Time } from "@/units";
-import { WeaponOnMinimap } from "./weapon-on-minimap";
-import type { Area } from "./weapon-on-minimap";
-import { makeCircle } from "./figures";
+import { makeCircle, type Area } from "./utils";
+import { WeaponOnMinimap } from ".";
 import { Speed } from "@/units";
 
 class Scoutor implements Area{
@@ -50,6 +49,9 @@ class Scoutor implements Area{
     };
 }
 
+/**
+ * @package
+ */
 export const scoutor = {
     "ラーク偵察機": new WeaponOnMinimap(new Scoutor({mRadius:119, mpsSpeed:28, mDistance:250})),
     "ファルコン偵察機": new WeaponOnMinimap(new Scoutor({mRadius:103, mpsSpeed:50, mDistance:500})),

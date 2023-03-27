@@ -64,21 +64,6 @@ export class Coordinates {
     }
 }
 
-// export class Velocity {
-//     private readonly x:Speed;
-//     private readonly y:Speed;
-//     constructor(vector:Coordinates, time:Time){
-//         this.x = new Speed(vector.x, time);
-//         this.y = new Speed(vector.y, time);
-//     }
-//     times(time:Time):Coordinates{
-//         return new Coordinates(this.x.times(time), this.y.times(time));
-//     }
-//     get argument():Angle{
-//         return this.times(new Time(1)).argument;
-//     }
-// }
-
 export class Angle {
     private constructor(readonly degree:number){}
     static byDegree(degree:number):Angle{
@@ -95,5 +80,11 @@ export class Angle {
     }
     get leftFace():Angle{
         return new Angle(this.degree + 90);
+    }
+    plus(addend:Angle):Angle{
+        return new Angle(this.degree + addend.degree);
+    }
+    times(magnification:number):Angle{
+        return new Angle(this.degree * magnification);
     }
 }

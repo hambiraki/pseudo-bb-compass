@@ -1,10 +1,9 @@
 /**
  * 索敵センサー系統
  */
-import { makeCircle } from "./figures";
 import { Coordinates, Length, Angle,type Time } from "@/units";
-import { WeaponOnMinimap } from "./weapon-on-minimap";
-import type { Area } from "./weapon-on-minimap";
+import { makeCircle, type Area } from "./utils";
+import { WeaponOnMinimap } from ".";
 
 class Sensor implements Area{
     private readonly radius: Length;
@@ -15,10 +14,13 @@ class Sensor implements Area{
         return makeCircle(location, this.radius);
     };
     at = (location:Coordinates, rotation:Angle, time: Time): Path2D =>{
-        return this.whole(location, rotation);
+        return makeCircle(location, this.radius);
     };
 }
     
+/**
+ * @package
+ */
 export const sensor = {
     "索敵センサー": new WeaponOnMinimap(new Sensor({mRadius:70})),
     "小型索敵センサー": new WeaponOnMinimap(new Sensor({mRadius:65})),

@@ -1,21 +1,27 @@
-import { Coordinates, Length, Angle,type Time } from "@/units";
-import { WeaponOnMinimap } from "./weapon-on-minimap";
-import type { Area } from "./weapon-on-minimap";
-import type { ModelFactory } from "./weapon-factory";
+import { Coordinates, Length, Angle, Time } from "@/units";
+import { makeCircle, type Area } from "./utils";
+import { WeaponOnMinimap } from ".";
 
 // Vセンサー投射器B系統
 class VSensorB implements Area{
-    constructor(){};
+    private readonly radius: Length;
+    private readonly lifetime: Time;
+    constructor(status:Record<"mRadius"|"sLifetime",number>){
+        this.radius = Length.byMeter(status.mRadius);
+        this.lifetime = new Time(status.sLifetime);
+    };
     whole = (location:Coordinates, rotation:Angle):Path2D => {
-        const area = new Path2D();
-
-        return area;
+        return makeCircle(location, this.radius);
     };
     at = (location:Coordinates, rotation:Angle, time: Time): Path2D =>{
-
+        if(time.s > this.lifetime.s) return new Path2D();
+        return makeCircle(location, this.radius);
     };
 }
 
+/**
+ * @package
+ */
 export const vSensorB = {
     "Vセンサー投射器": new WeaponOnMinimap(new VSensorB({mRadius:162, sLifetime:12})),
     "小型Vセンサー投射器": new WeaponOnMinimap(new VSensorB({mRadius:142, sLifetime:9})),

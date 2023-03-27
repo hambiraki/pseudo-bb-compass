@@ -1,7 +1,6 @@
 import { type Coordinates, Length, type Angle, Time } from "@/units";
-import { WeaponOnMinimap } from "./weapon-on-minimap";
-import type { Area } from "./weapon-on-minimap";
-import { makeCircle } from "./figures";
+import { makeCircle, type Area } from "./utils";
+import { WeaponOnMinimap } from ".";
 
 // FJ－アジテーター系統
 class Agitator implements Area{
@@ -21,6 +20,9 @@ class Agitator implements Area{
 
 }
 
+/**
+ * @package
+ */
 export const agitator = {
     "FJ－アジテーター": new WeaponOnMinimap(new Agitator({mRadius:37.8, sLifetime:8.6})),
     "FJ－アジテーターC": new WeaponOnMinimap(new Agitator({mRadius:32.7, sLifetime:9.8})),
