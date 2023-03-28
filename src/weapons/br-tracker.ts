@@ -1,7 +1,7 @@
 import { Coordinates, Length, Angle, Time } from "@/units";
 import { assert } from "@vue/compiler-core";
 import { makeSector, type Area } from "./utils";
-import { WeaponOnMinimap } from ".";
+import { Weapon } from "./weapon";
 
 
 // BRトラッカー系統
@@ -42,7 +42,7 @@ class BrTracker implements Area{
  * @package
  */
 export const brTracker = {
-    "BRトラッカー": new WeaponOnMinimap(new BrTracker({mRadius:162, degCenter:90, sToFull:1.65, sRetention:3, sPause:2})),
-    "集中型BRトラッカー": new WeaponOnMinimap(new BrTracker({mRadius:142, degCenter:120, sToFull:2.05, sRetention:2, sPause:2})),
-    "広域型BRトラッカー": new WeaponOnMinimap(new BrTracker({mRadius:198, degCenter:150, sToFull:1.67, sRetention:6, sPause:2})),
+    "BRトラッカー": new Weapon(new BrTracker({mRadius:162, degCenter:90, sToFull:1.65, sRetention:3, sPause:2})),
+    "集中型BRトラッカー": new Weapon(new BrTracker({mRadius:142, degCenter:120, sToFull:2.05, sRetention:2, sPause:2})),
+    "広域型BRトラッカー": new Weapon(new BrTracker({mRadius:198, degCenter:150, sToFull:1.67, sRetention:6, sPause:2})),
 };

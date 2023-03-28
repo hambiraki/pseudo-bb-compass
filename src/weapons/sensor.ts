@@ -3,7 +3,7 @@
  */
 import { Coordinates, Length, Angle,type Time } from "@/units";
 import { makeCircle, type Area } from "./utils";
-import { WeaponOnMinimap } from ".";
+import { Weapon } from "./weapon";
 
 class Sensor implements Area{
     private readonly radius: Length;
@@ -17,13 +17,13 @@ class Sensor implements Area{
         return makeCircle(location, this.radius);
     };
 }
-    
+
 /**
  * @package
  */
 export const sensor = {
-    "索敵センサー": new WeaponOnMinimap(new Sensor({mRadius:70})),
-    "小型索敵センサー": new WeaponOnMinimap(new Sensor({mRadius:65})),
-    "広域索敵センサー": new WeaponOnMinimap(new Sensor({mRadius:125})),
-    "新型索敵センサー": new WeaponOnMinimap(new Sensor({mRadius:88})),
+    "索敵センサー": new Weapon(new Sensor({mRadius:70})),
+    "小型索敵センサー": new Weapon(new Sensor({mRadius:65})),
+    "広域索敵センサー": new Weapon(new Sensor({mRadius:125})),
+    "新型索敵センサー": new Weapon(new Sensor({mRadius:88})),
 }

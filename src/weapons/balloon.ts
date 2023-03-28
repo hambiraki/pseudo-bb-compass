@@ -1,6 +1,6 @@
 import { Coordinates, Length, Angle, Time } from "@/units";
 import { makeCircle, type Area } from "./utils";
-import { WeaponOnMinimap } from ".";
+import { Weapon } from "./weapon";
 
 
 // 滞空索敵弾系統
@@ -24,8 +24,8 @@ class Balloon implements Area{
  * @package
  */
 export const balloon = {
-    "滞空索敵弾": new WeaponOnMinimap(new Balloon({mRadius:76, sLifetime:50})),
-    "小型滞空索敵弾": new WeaponOnMinimap(new Balloon({mRadius:65, sLifetime:60})),
-    "広域滞空索敵弾": new WeaponOnMinimap(new Balloon({mRadius:98, sLifetime:65})),
-    "高機能滞空索敵弾": new WeaponOnMinimap(new Balloon({mRadius:138, sLifetime:85})),
+    "滞空索敵弾": new Weapon(new Balloon({mRadius:76, sLifetime:50})),
+    "小型滞空索敵弾": new Weapon(new Balloon({mRadius:65, sLifetime:60})),
+    "広域滞空索敵弾": new Weapon(new Balloon({mRadius:98, sLifetime:65})),
+    "高機能滞空索敵弾": new Weapon(new Balloon({mRadius:138, sLifetime:85})),
 };

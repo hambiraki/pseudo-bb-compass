@@ -1,6 +1,6 @@
 import { Coordinates, Length, Angle,type Time } from "@/units";
 import { makeCircle, type Area } from "./utils";
-import { WeaponOnMinimap } from ".";
+import { Weapon } from "./weapon";
 
 // Vセンサー投射器A系統
 class VSensorA implements Area{
@@ -20,8 +20,8 @@ class VSensorA implements Area{
  * @package
  */
 export const vSensorA = {
-    "Vセンサー投射器": new WeaponOnMinimap(new VSensorA({mRadius:65})),
-    "小型Vセンサー投射器": new WeaponOnMinimap(new VSensorA({mRadius:55})),
-    "広域Vセンサー投射器": new WeaponOnMinimap(new VSensorA({mRadius:110})),
-    "H-Vセンサー投射器": new WeaponOnMinimap(new VSensorA({mRadius:100})),
+    "Vセンサー投射器": new Weapon(new VSensorA({mRadius:65})),
+    "小型Vセンサー投射器": new Weapon(new VSensorA({mRadius:55})),
+    "広域Vセンサー投射器": new Weapon(new VSensorA({mRadius:110})),
+    "H-Vセンサー投射器": new Weapon(new VSensorA({mRadius:100})),
 };

@@ -1,6 +1,6 @@
 import { Coordinates, Length, Angle,type Time, Speed } from "@/units";
 import { makeLine, type Area } from "./utils";
-import { WeaponOnMinimap } from ".";
+import { Weapon } from "./weapon";
 
 // 要請兵器系統
 class BoltOnUnit implements Area{
@@ -48,5 +48,5 @@ class BoltOnUnit implements Area{
  * @package
  */
 export const boltOnUnit = {
-    "偵察要請装置": new WeaponOnMinimap(new BoltOnUnit({mRadius:500, mpsSpeed:1200, mDistance:1200})),
+    "偵察要請装置": new Weapon(new BoltOnUnit({mRadius:500, mpsSpeed:1200, mDistance:1200})),
 };
