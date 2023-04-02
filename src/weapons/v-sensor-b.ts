@@ -23,8 +23,8 @@ class VSensorB implements Area{
  * @package
  */
 export const vSensorB = {
-    "Vセンサー投射器": new Weapon(new VSensorB({mRadius:162, sLifetime:12})),
-    "小型Vセンサー投射器": new Weapon(new VSensorB({mRadius:142, sLifetime:9})),
-    "広域Vセンサー投射器": new Weapon(new VSensorB({mRadius:242, sLifetime:33})),
-    "H-Vセンサー投射器": new Weapon(new VSensorB({mRadius:233, sLifetime:45})),
+    "Vセンサー投射器(B)": new Weapon(new VSensorB({mRadius:162, sLifetime:12})),
+    "小型Vセンサー投射器(B)": new Weapon(new VSensorB({mRadius:142, sLifetime:9})),
+    "広域Vセンサー投射器(B)": new Weapon(new VSensorB({mRadius:242, sLifetime:33})),
+    "H-Vセンサー投射器(B)": new Weapon(new VSensorB({mRadius:233, sLifetime:45})),
 };

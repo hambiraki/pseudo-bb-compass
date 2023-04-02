@@ -10,21 +10,33 @@ import { rader } from "./rader";
 import { boltOnUnit } from "./bolt-on-unit";
 import { agitator } from "./agitator";
 import type { Weapon } from "./weapon";
+import { ObjectKeys } from "@/utils";
 
-
-const unverifiedWeapons = {
-    "索敵センサー": sensor,
-    "ND索敵センサー": ndSensor,
-    "BRトラッカー": brTracker,
-    "滞空索敵弾":balloon,
-    "Vセンサー投射器A":vSensorA,
-    "Vセンサー投射器B":vSensorB,
-    "偵察機": scoutor,
-    "クリアリングソナー":sonar,
-    "レーダーユニット":rader,
-    "要請兵器":boltOnUnit,
-    "FJ－アジテーター":agitator,
+export const series2model = {
+    "索敵センサー": ObjectKeys(sensor),
+    "ND索敵センサー": ObjectKeys(ndSensor),
+    "BRトラッカー": ObjectKeys(brTracker),
+    "滞空索敵弾":ObjectKeys(balloon),
+    "Vセンサー投射器A":ObjectKeys(vSensorA),
+    "Vセンサー投射器B":ObjectKeys(vSensorB),
+    "偵察機": ObjectKeys(scoutor),
+    "クリアリングソナー":ObjectKeys(sonar),
+    "レーダーユニット":ObjectKeys(rader),
+    "要請兵器":ObjectKeys(boltOnUnit),
+    "FJ－アジテーター":ObjectKeys(agitator),
 }
-type raw = typeof unverifiedWeapons;
-type Series<T> = T extends any ? Record<keyof T, Weapon> : never;
-export const name2weapon: Record<keyof raw, Series<raw[keyof raw]>> = unverifiedWeapons;
+
+export const model2weapon = {
+    ...sensor,
+    ...ndSensor,
+    ...brTracker,
+    ...balloon,
+    ...vSensorA,
+    ...vSensorB,
+    ...scoutor,
+    ...sonar,
+    ...rader,
+    ...boltOnUnit,
+    ...agitator,
+}
+

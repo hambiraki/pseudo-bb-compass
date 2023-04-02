@@ -3,16 +3,16 @@
     <div class="celltitle" id="head_map">マップ</div>
     <div>
       <p>
-        <select v-model="location">
-          <option v-for="optionMapLocation in locations">
-            {{ optionMapLocation }}
+        <select v-model="selectedLocation">
+          <option v-for="locationOption in locations">
+            {{ locationOption }}
           </option>
         </select>
       </p>
       <p>
-        <select v-model="situation">
-          <option v-for="optionMapSituation in situations">
-            {{ optionMapSituation }}
+        <select v-model="selectedSituation" v-on:change="onSituationChange">
+          <option v-for="situationOption in situations">
+            {{ situationOption }}
           </option>
         </select>
       </p>
@@ -21,53 +21,27 @@
 </template>
 
 <script setup lang="ts">
-import { MapField } from "@/maps/map-field";
-import {
-  location2situation,
-  type MapLocation,
-  type MapSituation,
-} from "@/maps/map-names";
-import { assert } from "@vue/compiler-core";
-import {
-  computed,
-  provide,
-  ref,
-  type InjectionKey,
-  type Ref,
-  readonly,
-  watch,
-  inject,
-} from "vue";
-import { drawKey } from "./MinimapImg.vue";
+import { Minimap } from "@/minimaps";
+import type { Situation } from "@/minimaps/minimap-names";
+import { situation2location, type Location } from "@/minimaps/minimap-names";
+import { ObjectValues, getKeyByValue } from "@/utils";
+import { computed, ref, watch, type Ref } from "vue";
 
-const locations = computed((): Array<MapLocation> => {
-  return Array.from(location2situation.keys());
+const locations = ObjectValues(situation2location);
+const selectedLocation: Ref<Location> = ref("スカービ渓谷");
+const situations = computed((): Situation[] => {
+  return getKeyByValue(situation2location, selectedLocation.value);
 });
-const location: Ref<MapLocation> = ref("スカービ渓谷");
-const situations = computed((): ReadonlyArray<MapSituation> => {
-  const situations = location2situation.get(location.value);
-  assert(situations !== undefined);
-  if (situations === undefined) throw Error;
-  return situations;
-});
-const situation: Ref<MapSituation> = ref("戦線突破");
-watch(location, (): void => {
-  situation.value = situations.value[0];
+const selectedSituation: Ref<Situation> = ref("戦線突破");
+watch(situations, (): void => {
+  selectedSituation.value = situations.value[0];
 });
 
-const selectedMapField = computed((): MapField => {
-  assert(situations.value === location2situation.get(location.value));
-  assert(situations.value.includes(situation.value));
-  return new MapField(location.value, situation.value);
-});
-provide(selectedMapKey, readonly(selectedMapField.value));
-const drawAll = inject(drawKey);
-watch(situation, (): void => {
-  if (drawAll === undefined) return;
-  drawAll();
-});
-</script>
-
-<script lang="ts">
-export const selectedMapKey: InjectionKey<MapField> = Symbol();
+interface Emits {
+  (event: "update:selectedMinimap", minimap: Minimap): void;
+}
+const emit = defineEmits<Emits>();
+const onSituationChange = (): void => {
+  emit("update:selectedMinimap", new Minimap(selectedSituation.value));
+};
 </script>
