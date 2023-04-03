@@ -8,7 +8,7 @@
         <SelectWeapon v-on:add-weapon="pushWeapons" />
       </div>
     </div>
-    <OperateMinimap v-bind:minimap="selectedMap" v-model="weapons" />
+    <OperateMinimap v-bind:minimap="selectedMap" v-model:weapons="weapons" />
   </div>
 </template>
 
@@ -16,15 +16,22 @@
 import { ref, type Ref } from "vue";
 import { Minimap } from "./minimaps";
 import type { Weapon } from "./weapons/weapon";
-import SelectMap from "./components/selectMap.vue";
-import SelectWeapon from "./components/selectWeapon.vue";
-import OperateMinimap from "./components/operateMinimap.vue";
+import SelectMap from "./components/SelectMap.vue";
+import SelectWeapon from "./components/SelectWeapon.vue";
+import OperateMinimap from "./components/OperateMinimap.vue";
 
 const selectedMap: Ref<Minimap> = ref(new Minimap("戦線突破"));
 const weapons: Ref<Weapon[]> = ref([]);
 const pushWeapons = (weapon: Weapon): void => {
   weapons.value.push(weapon);
 };
+
+setInterval(() => {
+  console.log(selectedMap.value);
+  for (const weapon of weapons.value) {
+    console.log(weapon);
+  }
+}, 5000);
 </script>
 
 <style scoped>

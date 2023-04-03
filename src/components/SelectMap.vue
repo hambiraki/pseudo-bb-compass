@@ -10,7 +10,7 @@
         </select>
       </p>
       <p>
-        <select v-model="selectedSituation" v-on:change="onSituationChange">
+        <select v-model="selectedSituation">
           <option v-for="situationOption in situations">
             {{ situationOption }}
           </option>
@@ -38,10 +38,10 @@ watch(situations, (): void => {
 });
 
 interface Emits {
-  (event: "update:selectedMinimap", minimap: Minimap): void;
+  (event: "update:modelValue", minimap: Minimap): void;
 }
 const emit = defineEmits<Emits>();
-const onSituationChange = (): void => {
-  emit("update:selectedMinimap", new Minimap(selectedSituation.value));
-};
+watch(selectedSituation, (): void => {
+  emit("update:modelValue", new Minimap(selectedSituation.value));
+});
 </script>
