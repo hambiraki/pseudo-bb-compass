@@ -1,6 +1,6 @@
 import { type Coordinates, Length, type Angle, Time } from "@/units";
-import { makeCircle, type Area } from "./utils";
-import { Weapon } from "./weapon";
+import { makeCircle } from "./utils";
+import type { Area } from ".";
 
 // FJ－アジテーター系統
 class Agitator implements Area{
@@ -24,7 +24,7 @@ class Agitator implements Area{
  * @package
  */
 export const agitator = {
-    "FJ－アジテーター": new Weapon(new Agitator({mRadius:37.8, sLifetime:8.6})),
-    "FJ－アジテーターC": new Weapon(new Agitator({mRadius:32.7, sLifetime:9.8})),
-    "FJ－ジャバウォック": new Weapon(new Agitator({mRadius:44, sLifetime:14.3})),
+    "FJ－アジテーター": new Agitator({mRadius:37.8, sLifetime:8.6}),
+    "FJ－アジテーターC": new Agitator({mRadius:32.7, sLifetime:9.8}),
+    "FJ－ジャバウォック": new Agitator({mRadius:44, sLifetime:14.3}),
 };

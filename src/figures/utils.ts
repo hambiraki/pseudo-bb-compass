@@ -1,12 +1,4 @@
-import { Length, Coordinates, Angle, Time } from "@/units";
-
-/**
- * @package
- */
-export interface Area {
-    whole(location: Coordinates, rotation: Angle): Path2D;
-    at(location: Coordinates, rotation: Angle, time:Time): Path2D;
-}
+import { Length, Coordinates, Angle } from "@/units";
 
 /**
  * @package

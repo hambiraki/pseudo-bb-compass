@@ -9,8 +9,13 @@ import { sonar } from "./sonar";
 import { rader } from "./rader";
 import { boltOnUnit } from "./bolt-on-unit";
 import { agitator } from "./agitator";
-import type { Weapon } from "./weapon";
 import { ObjectKeys } from "@/utils";
+import type { Angle, Coordinates, Time } from "@/units";
+
+export interface Area {
+    whole(location: Coordinates, rotation: Angle): Path2D;
+    at(location: Coordinates, rotation: Angle, time:Time): Path2D;
+}
 
 export const series2model = {
     "索敵センサー": ObjectKeys(sensor),
@@ -39,4 +44,3 @@ export const model2weapon = {
     ...boltOnUnit,
     ...agitator,
 }
-

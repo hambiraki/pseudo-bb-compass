@@ -1,6 +1,6 @@
 import { Coordinates, Length, Angle, Time } from "@/units";
-import { makeSector, type Area } from "./utils";
-import { Weapon } from "./weapon";
+import { makeSector }  from "./utils";
+import type { Area } from ".";
 
 // レーダーユニット系統
 class Rader implements Area{
@@ -28,7 +28,7 @@ class Rader implements Area{
  * @package
  */
 export const rader = {
-    "レーダーユニット": new Weapon(new Rader({mRadius:259, degCenter:60, sToFull:1.67})),
-    "レーダーユニットⅡ": new Weapon(new Rader({mRadius:229, degCenter:120, sToFull:1.79})),
-    "レーダーユニットⅢ": new Weapon(new Rader({mRadius:209, degCenter:360, sToFull:1.77})),
+    "レーダーユニット": new Rader({mRadius:259, degCenter:60, sToFull:1.67}),
+    "レーダーユニットⅡ": new Rader({mRadius:229, degCenter:120, sToFull:1.79}),
+    "レーダーユニットⅢ": new Rader({mRadius:209, degCenter:360, sToFull:1.77}),
 };

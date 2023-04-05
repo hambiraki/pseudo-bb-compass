@@ -1,6 +1,6 @@
 import { Coordinates, Length, Angle,type Time } from "@/units";
-import { makeCircle, type Area } from "./utils";
-import { Weapon } from "./weapon";
+import { makeCircle }  from "./utils";
+import type { Area } from ".";
 
 // クリアリングソナー系統
 class Sonar implements Area{
@@ -20,7 +20,7 @@ class Sonar implements Area{
  * @package
  */
 export const sonar = {
-    "クリアリングソナー": new Weapon(new Sonar({mRadius:184})),
-    "クリアリングソナーM": new Weapon(new Sonar({mRadius:174})),
-    "クリアリングソナーW": new Weapon(new Sonar({mRadius:242})),
+    "クリアリングソナー": new Sonar({mRadius:184}),
+    "クリアリングソナーM": new Sonar({mRadius:174}),
+    "クリアリングソナーW": new Sonar({mRadius:242}),
 };

@@ -14,9 +14,8 @@
 </template>
 
 <script setup lang="ts">
+import { series2model, type model2weapon, type Area } from "@/figures";
 import { ObjectKeys } from "@/utils";
-import { model2weapon, series2model } from "@/weapons";
-import type { Weapon } from "@/weapons/weapon";
 import { computed, ref, watch, type Ref } from "vue";
 
 type SeriesName = keyof typeof series2model;
@@ -32,7 +31,7 @@ watch(selectedSeries, (): void => {
 });
 
 interface Emits {
-  (event: "addWeapon", weapon: Weapon): void;
+  (event: "addWeapon", weapon: Area): void;
 }
 const emit = defineEmits<Emits>();
 const addWeapon = (): void => {

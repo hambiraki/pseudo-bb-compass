@@ -1,6 +1,6 @@
 import { Coordinates, Length, Angle,type Time } from "@/units";
-import { makeLine, type Area } from "./utils";
-import { Weapon } from "./weapon";
+import { makeLine }  from "./utils";
+import type { Area } from ".";
 
 // ND索敵センサー系統
 class NdSensor implements Area{
@@ -20,7 +20,7 @@ class NdSensor implements Area{
  * @package
  */
 export const ndSensor = {
-    "ND索敵センサー": new Weapon(new NdSensor({mRadius:173})),
-    "小型ND索敵センサー": new Weapon(new NdSensor({mRadius:153})),
-    "広域ND索敵センサー": new Weapon(new NdSensor({mRadius:286})),
+    "ND索敵センサー": new NdSensor({mRadius:173}),
+    "小型ND索敵センサー": new NdSensor({mRadius:153}),
+    "広域ND索敵センサー": new NdSensor({mRadius:286}),
 };

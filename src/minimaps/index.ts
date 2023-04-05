@@ -12,22 +12,41 @@ const canvasXStart = 0; // dx(Canvasの描画開始位置X)
 const canvasYStart = 0; // dy(Canvasの描画開始位置Y)
 
 export class Minimap {
-  readonly location: Location;
-  constructor(readonly situation: Situation) {
-    this.location = situation2location[situation];
+  readonly Image: HTMLImageElement;
+  public hasDownloaded = false;  // 非同期処理にすべき？
+  constructor(situation: Situation) {
+    const location = situation2location[situation];
+    this.Image = downloadMapImage(location, situation);
   }
   readonly draw = (ctx: CanvasRenderingContext2D, minimapLength:Length): void => {
-    ctx.drawImage(
-      downloadMapImage(this.location, this.situation),
-      originalXStart,
-      originalYStart,
-      originalSquareSideLength,
-      originalSquareSideLength,
-      canvasXStart,
-      canvasYStart,
-      minimapLength.px,
-      minimapLength.px,
-    );
+    if(this.hasDownloaded){
+      ctx.drawImage(
+        this.Image,
+        originalXStart,
+        originalYStart,
+        originalSquareSideLength,
+        originalSquareSideLength,
+        canvasXStart,
+        canvasYStart,
+        minimapLength.px,
+        minimapLength.px,
+        );
+    }else{
+      this.hasDownloaded = true;
+      this.Image.onload = ():void => {
+        ctx.drawImage(
+          this.Image,
+          originalXStart,
+          originalYStart,
+          originalSquareSideLength,
+          originalSquareSideLength,
+          canvasXStart,
+          canvasYStart,
+          minimapLength.px,
+          minimapLength.px,
+          );
+      }
+    }
   };
 }
 const downloadMapImage = (

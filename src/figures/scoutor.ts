@@ -3,8 +3,8 @@
  */
 
 import { Coordinates, Length, Angle, type Time } from "@/units";
-import { makeCircle, type Area } from "./utils";
-import { Weapon } from "./weapon";
+import { makeCircle }  from "./utils";
+import type { Area } from ".";
 import { Speed } from "@/units";
 
 class Scoutor implements Area{
@@ -53,11 +53,11 @@ class Scoutor implements Area{
  * @package
  */
 export const scoutor = {
-    "ラーク偵察機": new Weapon(new Scoutor({mRadius:119, mpsSpeed:28, mDistance:250})),
-    "ファルコン偵察機": new Weapon(new Scoutor({mRadius:103, mpsSpeed:50, mDistance:500})),
-    "ストーク偵察機": new Weapon(new Scoutor({mRadius:113, mpsSpeed:2.6, mDistance:50})),
-    "アウル偵察機": new Weapon(new Scoutor({mRadius:142, mpsSpeed:14, mDistance:220})),
-    "ロビン偵察機": new Weapon(new Scoutor({mRadius:220, mpsSpeed:20, mDistance:150})),
-    "カナリア偵察機": new Weapon(new Scoutor({mRadius:266, mpsSpeed:25, mDistance:80})),
-    "マグ": new Weapon(new Scoutor({mRadius:176, mpsSpeed:16, mDistance:180})),
+    "ラーク偵察機": new Scoutor({mRadius:119, mpsSpeed:28, mDistance:250}),
+    "ファルコン偵察機": new Scoutor({mRadius:103, mpsSpeed:50, mDistance:500}),
+    "ストーク偵察機": new Scoutor({mRadius:113, mpsSpeed:2.6, mDistance:50}),
+    "アウル偵察機": new Scoutor({mRadius:142, mpsSpeed:14, mDistance:220}),
+    "ロビン偵察機": new Scoutor({mRadius:220, mpsSpeed:20, mDistance:150}),
+    "カナリア偵察機": new Scoutor({mRadius:266, mpsSpeed:25, mDistance:80}),
+    "マグ": new Scoutor({mRadius:176, mpsSpeed:16, mDistance:180}),
 };

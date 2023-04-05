@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch, ref, toRefs, watchEffect, onMounted } from "vue";
+import { computed, watch, ref, onMounted, shallowRef } from "vue";
 import type { Ref } from "vue";
 import { Length } from "@/units";
 import type { Weapon } from "@/weapons/weapon";
@@ -54,7 +54,7 @@ onMounted(draw);
 watch(props, draw);
 
 // ドラッグ処理
-const activeWeapon: Ref<WeaponOnMinimap | null> = ref(null);
+const activeWeapon: Ref<WeaponOnMinimap | null> = shallowRef(null);
 const setActiveWeapon = (event: MouseEvent): void => {
   const canvas = document.getElementById("minimap");
   if (!(canvas instanceof HTMLCanvasElement)) return;
@@ -63,7 +63,7 @@ const setActiveWeapon = (event: MouseEvent): void => {
   if (context === null) return; // 先にgetContext("webgl")とかで発生
   if (rect === null) return;
   activeWeapon.value = WeaponOnMinimap.detectClickedWeapon(
-    weapons,
+    weapons.value,
     event,
     context,
     rect
