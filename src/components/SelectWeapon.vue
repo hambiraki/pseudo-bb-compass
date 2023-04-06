@@ -14,8 +14,10 @@
 </template>
 
 <script setup lang="ts">
-import { series2model, type model2weapon, type Area } from "@/figures";
+import { series2model, model2weapon } from "@/weapon/figures";
+import { Angle, Coordinates, Length } from "@/units";
 import { ObjectKeys } from "@/utils";
+import { Weapon } from "@/weapon/weapon";
 import { computed, ref, watch, type Ref } from "vue";
 
 type SeriesName = keyof typeof series2model;
@@ -31,10 +33,16 @@ watch(selectedSeries, (): void => {
 });
 
 interface Emits {
-  (event: "addWeapon", weapon: Area): void;
+  (event: "addWeapon", weapon: Weapon): void;
 }
 const emit = defineEmits<Emits>();
 const addWeapon = (): void => {
-  emit("addWeapon", model2weapon[selectedModel.value]);
+  const length0 = Length.byMeter(0);
+  const origin = new Coordinates(length0, length0);
+  const angle0 = Angle.byRadian(0);
+  emit(
+    "addWeapon",
+    new Weapon(model2weapon[selectedModel.value], origin, angle0)
+  );
 };
 </script>

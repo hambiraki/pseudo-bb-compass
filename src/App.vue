@@ -13,25 +13,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref } from "vue";
+import { shallowRef, type Ref } from "vue";
 import { Minimap } from "./minimaps";
-import type { Weapon } from "./weapons/weapon";
 import SelectMap from "./components/SelectMap.vue";
 import SelectWeapon from "./components/SelectWeapon.vue";
 import OperateMinimap from "./components/OperateMinimap.vue";
+import type { Weapon } from "./weapon/weapon";
 
-const selectedMap: Ref<Minimap> = ref(new Minimap("戦線突破"));
-const weapons: Ref<Weapon[]> = ref([]);
+const selectedMap = shallowRef(new Minimap("戦線突破"));
+const weapons: Ref<Weapon[]> = shallowRef([]);
 const pushWeapons = (weapon: Weapon): void => {
+  console.log("hello");
+
   weapons.value.push(weapon);
 };
-
-setInterval(() => {
-  console.log(selectedMap.value);
-  for (const weapon of weapons.value) {
-    console.log(weapon);
-  }
-}, 5000);
 </script>
 
 <style scoped>

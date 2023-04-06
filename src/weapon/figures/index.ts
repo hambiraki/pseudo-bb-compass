@@ -31,7 +31,7 @@ export const series2model = {
     "FJ－アジテーター":ObjectKeys(agitator),
 }
 
-export const model2weapon = {
+const model2weaponSubclass = {
     ...sensor,
     ...ndSensor,
     ...brTracker,
@@ -44,3 +44,6 @@ export const model2weapon = {
     ...boltOnUnit,
     ...agitator,
 }
+
+type Model = keyof typeof model2weaponSubclass;
+export const model2weapon: Record<Model, Area> = model2weaponSubclass;

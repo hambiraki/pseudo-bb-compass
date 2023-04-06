@@ -58,7 +58,6 @@ const downloadMapImage = (
   const minimapIndex = extensions[situation];
   const rawUrl = `${locationBaseUrl}/${location}/${situation}/${minimapIndex}`;
   image.src = encodeURI(rawUrl);
-  console.log(rawUrl);
   return image;
 };
 

@@ -11,12 +11,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch, ref, onMounted, shallowRef } from "vue";
+import {
+  computed,
+  watch,
+  ref,
+  onMounted,
+  shallowRef,
+  toRef,
+  toRefs,
+} from "vue";
 import type { Ref } from "vue";
 import { Length } from "@/units";
-import type { Weapon } from "@/weapons/weapon";
-import { WeaponOnMinimap } from "@/active-weapon";
 import type { Minimap } from "@/minimaps";
+import { WeaponOnMinimap } from "@/weapon/active-weapon";
+import type { Weapon } from "@/weapon/weapon";
 
 /**
  * Canvasの描画サイズdWidth,dHeight
@@ -33,25 +41,26 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-
-const weapons = ref(props.weapons);
+const propsRef = toRefs(props);
+const weapons = toRefs(props.weapons);
 
 const draw = (): void => {
-  console.log("Hello!!!! DRAW!!!!");
+  console.log("draw");
+
   const canvas = document.getElementById("minimap");
   if (!(canvas instanceof HTMLCanvasElement)) return;
-  console.log("canvas instanceof HTMLCanvasElement");
   const context = canvas.getContext("2d");
   if (context === null) return;
-  console.log("I have the context.");
   context.clearRect(0, 0, canvasSide.value.px, canvasSide.value.px);
   props.minimap.draw(context, canvasSide.value);
-  for (const weapon of weapons.value) {
-    weapon.draw(context);
+  for (const weapon of weapons) {
+    console.log(weapon.value);
+    weapon.value.draw(context);
   }
 };
 onMounted(draw);
 watch(props, draw);
+watch(weapons, draw);
 
 // ドラッグ処理
 const activeWeapon: Ref<WeaponOnMinimap | null> = shallowRef(null);
@@ -71,7 +80,7 @@ const setActiveWeapon = (event: MouseEvent): void => {
 };
 const transform = (event: MouseEvent): void => {
   if (activeWeapon.value === null) return;
-  activeWeapon.value.transform(event);
+  activeWeapon.value = activeWeapon.value.transform(event);
 };
 const clearActiveWeapon = (): void => {
   activeWeapon.value = null;

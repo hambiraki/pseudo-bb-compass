@@ -1,5 +1,5 @@
 import { Coordinates, Length, Angle, Time } from "@/units";
-import type { Area } from ".";
+import type { Area } from "./figures";
 
 const CENTER_POINT_COLOR = "rgba(255,255,255,1)";
 const AREA_COLOR = "rgba(255,0,0,0.3)";
