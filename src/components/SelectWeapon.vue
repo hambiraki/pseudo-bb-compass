@@ -40,9 +40,11 @@ const addWeapon = (): void => {
   const length0 = Length.byMeter(0);
   const origin = new Coordinates(length0, length0);
   const angle0 = Angle.byRadian(0);
-  emit(
-    "addWeapon",
-    new Weapon(model2weapon[selectedModel.value], origin, angle0)
+  const selectedWeapon = new Weapon(
+    model2weapon[selectedModel.value],
+    origin,
+    angle0
   );
+  emit("addWeapon", selectedWeapon);
 };
 </script>

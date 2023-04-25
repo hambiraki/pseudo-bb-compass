@@ -4,6 +4,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "strict": true,
+    "noUncheckedIndexedAccess": true,
     "paths": {
       "@/*": ["./src/*"]
     },

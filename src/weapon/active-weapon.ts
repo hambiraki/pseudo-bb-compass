@@ -1,39 +1,42 @@
 import { Coordinates, Length } from "../units";
 import type { Weapon } from "./weapon";
 
-export class WeaponOnMinimap{
-    private constructor(
-        private readonly weapon: Weapon,
-        private readonly context: CanvasRenderingContext2D,
-        private readonly rect: DOMRect,
-    ){}
-    static detectClickedWeapon = (
-      weapons: Weapon[],
-      event: MouseEvent,
-      context: CanvasRenderingContext2D,
-      rect: DOMRect
-    ): WeaponOnMinimap | null => {
-      const point = new Coordinates(
-        Length.byPixel(event.clientX - rect.left),
-        Length.byPixel(event.clientY - rect.top)
-      );
-      for (const weapon of [...weapons].reverse()) {
-        const clickingWeapon = weapon.transform(context, point);
-        if (clickingWeapon !== null){
-          return new WeaponOnMinimap(weapon,context,rect);
-        }
+export class UpdatingWeapons {
+  private constructor(
+    readonly weapons: Weapon[],
+    private readonly activeWeapon: Weapon,
+    private readonly transform: (weapon: Weapon, point: Coordinates) => Weapon,
+    private readonly rect: DOMRect
+  ) {}
+  readonly update = (event: MouseEvent): UpdatingWeapons => {
+    const activeIndex = this.weapons.indexOf(this.activeWeapon);
+    const point = new Coordinates(
+      Length.byPixel(event.clientX - this.rect.left),
+      Length.byPixel(event.clientY - this.rect.top)
+    );
+    this.weapons[activeIndex] = this.transform(this.activeWeapon, point);
+    return { ...this };
+  };
+  static detectClickedWeapon = (
+    weapons: Weapon[],
+    event: MouseEvent,
+    context: CanvasRenderingContext2D,
+    rect: DOMRect
+  ): UpdatingWeapons | null => {
+    const point = new Coordinates(
+      Length.byPixel(event.clientX - rect.left),
+      Length.byPixel(event.clientY - rect.top)
+    );
+    for (const weapon of [...weapons].reverse()) {
+      if (weapon.isPointToMove(context, point)) {
+        const transform = (w: Weapon, point: Coordinates) => w.move(point);
+        return new UpdatingWeapons(weapons, weapon, transform, rect);
       }
-      return null;
+      if (weapon.isPointToRotate(context, point)) {
+        const transform = (w: Weapon, point: Coordinates) => w.rotate(point);
+        return new UpdatingWeapons(weapons, weapon, transform, rect);
+      }
     }
-    transform = (event: MouseEvent): WeaponOnMinimap | null => {
-        const point = new Coordinates(
-          Length.byPixel(event.clientX - this.rect.left),
-          Length.byPixel(event.clientY - this.rect.top)
-        );
-        const transformedWeapon = this.weapon.transform(this.context, point);
-        if(transformedWeapon === null) return null;
-        return new WeaponOnMinimap(
-          transformedWeapon, this.context, this.rect
-        )
-    }
+    return null;
+  };
 }

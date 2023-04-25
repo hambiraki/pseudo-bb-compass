@@ -8,55 +8,31 @@
         <SelectWeapon v-on:add-weapon="pushWeapons" />
       </div>
     </div>
-    <canvas
-      ref="minimapCanvas"
-      v-bind:width="pxCanvasSide"
-      v-bind:height="pxCanvasSide"
-    ></canvas>
+    <OperateMinimap v-model:minimap="minimap" v-model:weapons="weapons" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { shallowRef, onMounted, watch, computed, ref } from "vue";
+import { watch, computed, ref, shallowReactive } from "vue";
 import { Minimap } from "./minimaps";
 import SelectWeapon from "./components/SelectWeapon.vue";
 import type { Weapon } from "./weapon/weapon";
-import { Length } from "./units";
 import type { Situation } from "./minimaps/minimap-names";
 import SelectMap from "./components/SelectMap.vue";
+import OperateMinimap from "./components/OperateMinimap.vue";
 
-const minimapCanvas = ref<HTMLCanvasElement>();
 const situation = ref<Situation>("戦線突破");
 const minimap = computed((): Minimap => {
   return new Minimap(situation.value);
 });
-const weapons = shallowRef<Weapon[]>([]);
+const weapons = shallowReactive<Weapon[]>([]);
 const pushWeapons = (weapon: Weapon): void => {
-  weapons.value.push(weapon);
-  weapons.value = [...weapons.value];
+  weapons.push(weapon);
 };
 
-const pxCanvasSide = computed((): number => {
-  return Math.min(window.innerWidth * 0.9, window.innerHeight * 0.7);
-});
-
-const draw = (): void => {
-  if (minimapCanvas.value === undefined) return;
-  const context = minimapCanvas.value.getContext("2d");
-  if (context === null) return;
-  const pxSide = Math.max(
-    minimapCanvas.value.width,
-    minimapCanvas.value.height
-  );
-  context.clearRect(0, 0, pxSide, pxSide);
-  minimap.value.draw(context, Length.byPixel(pxSide));
-  for (const weapon of weapons.value) weapon.draw(context);
-};
-onMounted(draw);
 watch(minimap, (): void => {
-  weapons.value = [];
+  weapons.splice(0);
 });
-watch(weapons, draw);
 </script>
 
 <style scoped>
