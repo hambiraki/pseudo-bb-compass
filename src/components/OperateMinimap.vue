@@ -12,10 +12,10 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, shallowReactive, watch } from "vue";
+import { detectClickedWeapon, type ActiveWeapon } from "@/weapon/active-weapon";
 import type { Weapon } from "@/weapon/weapon";
 import { Length } from "@/units";
 import type { Minimap } from "@/minimaps";
-import { UpdatingWeapons } from "@/weapon/active-weapon";
 
 const minimapCanvas = ref<HTMLCanvasElement>();
 // ウィンドウ幅変更時に変動(それ以外は定数)
@@ -46,25 +46,23 @@ onMounted(draw);
 watch(props, draw);
 
 // ドラッグ処理
-const updatingWeapons = ref<UpdatingWeapons | null>(null);
+const activeWeapon = ref<ActiveWeapon | null>(null);
 const setActiveWeapon = (event: MouseEvent): void => {
   if (minimapCanvas.value === undefined) return;
   const rect = minimapCanvas.value.getBoundingClientRect();
   const context = minimapCanvas.value.getContext("2d");
   if (context === null) return; // 先にgetContext("webgl")とかで発生
-  updatingWeapons.value = UpdatingWeapons.detectClickedWeapon(
-    weapons,
-    event,
-    context,
-    rect
-  );
+  activeWeapon.value = detectClickedWeapon(weapons, event, context, rect);
 };
 const transform = (event: MouseEvent): void => {
-  if (updatingWeapons.value === null) return;
-  updatingWeapons.value = updatingWeapons.value.update(event);
-  weapons = updatingWeapons.value.weapons;
+  if (activeWeapon.value === null) return;
+  const activeIndex = activeWeapon.value.index;
+  activeWeapon.value = activeWeapon.value.transform(event);
+  weapons[activeIndex] = activeWeapon.value.weapon;
 };
 const clearActiveWeapon = (): void => {
-  updatingWeapons.value = null;
+  console.log("aaa");
+
+  activeWeapon.value = null;
 };
 </script>

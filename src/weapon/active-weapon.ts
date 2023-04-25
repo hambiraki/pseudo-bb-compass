@@ -1,42 +1,61 @@
 import { Coordinates, Length } from "../units";
 import type { Weapon } from "./weapon";
 
-export class UpdatingWeapons {
-  private constructor(
-    readonly weapons: Weapon[],
-    private readonly activeWeapon: Weapon,
-    private readonly transform: (weapon: Weapon, point: Coordinates) => Weapon,
+export const detectClickedWeapon = (
+  weapons: Weapon[],
+  event: MouseEvent,
+  context: CanvasRenderingContext2D,
+  rect: DOMRect
+): ActiveWeapon | null => {
+  const point = new Coordinates(
+    Length.byPixel(event.clientX - rect.left),
+    Length.byPixel(event.clientY - rect.top)
+  );
+  for (const [index, weapon] of [...weapons].reverse().entries()) {
+    if (weapon.isPointToMove(context, point)) {
+      return new MovingWeapon(index, weapon, rect);
+    }
+    if (weapon.isPointToRotate(context, point)) {
+      return new RotatingWeapon(index, weapon, rect);
+    }
+  }
+  return null;
+};
+
+export interface ActiveWeapon {
+  readonly index: number;
+  readonly weapon: Weapon;
+  transform(event: MouseEvent): ActiveWeapon;
+}
+
+class MovingWeapon implements ActiveWeapon {
+  constructor(
+    readonly index: number,
+    readonly weapon: Weapon,
     private readonly rect: DOMRect
   ) {}
-  readonly update = (event: MouseEvent): UpdatingWeapons => {
-    const activeIndex = this.weapons.indexOf(this.activeWeapon);
+  transform = (event: MouseEvent): MovingWeapon => {
     const point = new Coordinates(
       Length.byPixel(event.clientX - this.rect.left),
       Length.byPixel(event.clientY - this.rect.top)
     );
-    this.weapons[activeIndex] = this.transform(this.activeWeapon, point);
-    return { ...this };
+    const movedWeapon = this.weapon.move(point);
+    return new MovingWeapon(this.index, movedWeapon, this.rect);
   };
-  static detectClickedWeapon = (
-    weapons: Weapon[],
-    event: MouseEvent,
-    context: CanvasRenderingContext2D,
-    rect: DOMRect
-  ): UpdatingWeapons | null => {
+}
+
+class RotatingWeapon implements ActiveWeapon {
+  constructor(
+    readonly index: number,
+    readonly weapon: Weapon,
+    private readonly rect: DOMRect
+  ) {}
+  transform = (event: MouseEvent): RotatingWeapon => {
     const point = new Coordinates(
-      Length.byPixel(event.clientX - rect.left),
-      Length.byPixel(event.clientY - rect.top)
+      Length.byPixel(event.clientX - this.rect.left),
+      Length.byPixel(event.clientY - this.rect.top)
     );
-    for (const weapon of [...weapons].reverse()) {
-      if (weapon.isPointToMove(context, point)) {
-        const transform = (w: Weapon, point: Coordinates) => w.move(point);
-        return new UpdatingWeapons(weapons, weapon, transform, rect);
-      }
-      if (weapon.isPointToRotate(context, point)) {
-        const transform = (w: Weapon, point: Coordinates) => w.rotate(point);
-        return new UpdatingWeapons(weapons, weapon, transform, rect);
-      }
-    }
-    return null;
+    const rotatedWeapon = this.weapon.rotate(point);
+    return new RotatingWeapon(this.index, rotatedWeapon, this.rect);
   };
 }
