@@ -3,10 +3,9 @@
     ref="minimapCanvas"
     v-bind:width="pxCanvasSide"
     v-bind:height="pxCanvasSide"
-    v-on:mousedown="setActiveWeapon"
-    v-on:mousemove="transform"
-    v-on:mouseup="clearActiveWeapon"
-    v-on:mouseout="clearActiveWeapon"
+    v-on:pointerdown="setActiveWeapon"
+    v-on:pointermove="transform"
+    v-on:pointerup="clearActiveWeapon"
   ></canvas>
 </template>
 
@@ -54,14 +53,14 @@ watch(props, draw);
 
 // ドラッグ処理
 const activeWeapon = ref<ActiveWeapon | null>(null);
-const setActiveWeapon = (event: MouseEvent): void => {
+const setActiveWeapon = (event: PointerEvent): void => {
   if (minimapCanvas.value === undefined) return;
   const rect = minimapCanvas.value.getBoundingClientRect();
   const context = minimapCanvas.value.getContext("2d");
   if (context === null) return; // 先にgetContext("webgl")とかで発生
   activeWeapon.value = detectClickedWeapon(weapons, event, context, rect);
 };
-const transform = (event: MouseEvent): void => {
+const transform = (event: PointerEvent): void => {
   if (activeWeapon.value === null) return;
   const activeIndex = activeWeapon.value.index;
   activeWeapon.value = activeWeapon.value.transform(event);

@@ -3,7 +3,7 @@ import type { Weapon } from "./weapon";
 
 export const detectClickedWeapon = (
   weapons: Weapon[],
-  event: MouseEvent,
+  event: PointerEvent,
   context: CanvasRenderingContext2D,
   rect: DOMRect
 ): ActiveWeapon | null => {
@@ -25,7 +25,7 @@ export const detectClickedWeapon = (
 export interface ActiveWeapon {
   readonly index: number;
   readonly weapon: Weapon;
-  transform(event: MouseEvent): ActiveWeapon;
+  transform(event: PointerEvent): ActiveWeapon;
 }
 
 class MovingWeapon implements ActiveWeapon {
@@ -34,7 +34,7 @@ class MovingWeapon implements ActiveWeapon {
     readonly weapon: Weapon,
     private readonly rect: DOMRect
   ) {}
-  transform = (event: MouseEvent): MovingWeapon => {
+  transform = (event: PointerEvent): MovingWeapon => {
     const point = new Coordinates(
       Length.byPixel(event.clientX - this.rect.left),
       Length.byPixel(event.clientY - this.rect.top)
@@ -50,7 +50,7 @@ class RotatingWeapon implements ActiveWeapon {
     readonly weapon: Weapon,
     private readonly rect: DOMRect
   ) {}
-  transform = (event: MouseEvent): RotatingWeapon => {
+  transform = (event: PointerEvent): RotatingWeapon => {
     const point = new Coordinates(
       Length.byPixel(event.clientX - this.rect.left),
       Length.byPixel(event.clientY - this.rect.top)
