@@ -72,14 +72,3 @@ const clearActiveWeapon = (): void => {
   activeWeapon.value = null;
 };
 </script>
-Argument of type '{ readonly isPointToMove: (ctx: CanvasRenderingContext2D,
-point: Coordinates) => boolean; readonly isPointToRotate: (ctx:
-CanvasRenderingContext2D, point: Coordinates) => boolean; readonly move: (point:
-Coordinates) => Weapon; readonly rotate: (point: Coordinates) => Weapon;
-readonly draw: (ctx: CanvasRenderingConte...' is not assignable to parameter of
-type 'Weapon[]'. Type '{ readonly isPointToMove: (ctx: CanvasRenderingContext2D,
-point: Coordinates) => boolean; readonly isPointToRotate: (ctx:
-CanvasRenderingContext2D, point: Coordinates) => boolean; readonly move: (point:
-Coordinates) => Weapon; readonly rotate: (point: Coordinates) => Weapon;
-readonly draw: (ctx: CanvasRenderingConte...' is missing the following
-properties from type 'Weapon': area, location, rotation, centerPoint
