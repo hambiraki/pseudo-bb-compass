@@ -3,6 +3,9 @@
     ref="minimapCanvas"
     v-bind:width="pxCanvasSide"
     v-bind:height="pxCanvasSide"
+    v-on:touchdown="setActiveWeapon"
+    v-on:touchmove="transform"
+    v-on:touchup="clearActiveWeapon"
     v-on:pointerdown="setActiveWeapon"
     v-on:pointermove="transform"
     v-on:pointerup="clearActiveWeapon"
@@ -10,14 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  computed,
-  onMounted,
-  reactive,
-  ref,
-  shallowReactive,
-  watch,
-} from "vue";
+import { computed, onMounted, reactive, ref, watch } from "vue";
 import { detectClickedWeapon, type ActiveWeapon } from "@/weapon/active-weapon";
 import type { Weapon } from "@/weapon/weapon";
 import { Length } from "@/units";
