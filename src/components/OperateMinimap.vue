@@ -4,7 +4,7 @@
     v-bind:width="pxCanvasSide"
     v-bind:height="pxCanvasSide"
     v-on:touchdown="setActiveWeapon"
-    v-on:touchmove="transform"
+    v-on:touchmove.prevent="transform"
     v-on:touchup="clearActiveWeapon"
     v-on:pointerdown="setActiveWeapon"
     v-on:pointermove="transform"
