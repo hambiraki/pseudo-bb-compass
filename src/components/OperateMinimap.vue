@@ -3,9 +3,7 @@
     ref="minimapCanvas"
     v-bind:width="pxCanvasSide"
     v-bind:height="pxCanvasSide"
-    v-on:touchdown="setActiveWeapon"
-    v-on:touchmove.prevent="transform"
-    v-on:touchup="clearActiveWeapon"
+    style="touch-action: pinch-zoom"
     v-on:pointerdown="setActiveWeapon"
     v-on:pointermove="transform"
     v-on:pointerup="clearActiveWeapon"
@@ -22,7 +20,7 @@ import type { Minimap } from "@/minimaps";
 const minimapCanvas = ref<HTMLCanvasElement>();
 // ウィンドウ幅変更時に変動(それ以外は定数)
 const pxCanvasSide = computed((): number => {
-  return Math.min(window.innerWidth * 0.9, window.innerHeight * 0.7);
+  return Math.min(window.innerWidth, window.innerHeight);
 });
 
 interface Props {
