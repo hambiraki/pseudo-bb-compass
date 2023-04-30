@@ -1,10 +1,8 @@
 <template>
-  aaaaaaaaaaaaaaaaaaaaa
   <canvas
     ref="minimapCanvas"
     v-bind:width="pxCanvasSide"
     v-bind:height="pxCanvasSide"
-    style="touch-action: pinch-zoom"
     v-on:pointerdown="setActiveWeapon"
     v-on:pointermove="transform"
     v-on:pointerup="clearActiveWeapon"
