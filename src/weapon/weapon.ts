@@ -1,5 +1,6 @@
 import { Coordinates, Length, Angle, Time } from "@/units";
 import type { Area } from "./figures";
+import { makeCircle } from "./figures/utils";
 
 const CENTER_POINT_COLOR = "rgba(255,255,255,1)";
 const AREA_COLOR = "rgba(255,0,0,0.3)";
@@ -11,15 +12,7 @@ export class Weapon {
     private readonly rotation: Angle
   ) {}
   private get centerPoint(): Path2D {
-    const centerPoint = new Path2D();
-    centerPoint.arc(
-      this.location.x.px,
-      this.location.y.px,
-      Length.byMeter(5).px,
-      0,
-      2 * Math.PI
-    );
-    return centerPoint;
+    return makeCircle(this.location, Length.byMeter(5));
   }
   readonly isPointToMove = (
     ctx: CanvasRenderingContext2D,
