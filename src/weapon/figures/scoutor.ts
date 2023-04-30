@@ -33,8 +33,8 @@ class Scoutor implements Area {
       endAreaCenter.x.px,
       endAreaCenter.y.px,
       this.radius.px,
-      rotation.rightFace.radian,
-      rotation.leftFace.radian
+      rotation.leftFace.radian,
+      rotation.rightFace.radian
     );
     area.closePath();
     return area;
@@ -47,7 +47,7 @@ class Scoutor implements Area {
     );
   };
   areaToMove = (location: Coordinates, rotation: Angle): Path2D =>
-    makeCircle(location, Length.byMeter(5));
+    makeCircle(location, this.radius);
   areaToRotate = this.whole;
 }
 
