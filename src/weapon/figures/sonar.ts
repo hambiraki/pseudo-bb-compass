@@ -15,8 +15,7 @@ class Sonar implements Area {
     return new Path2D();
   };
   areaToMove = this.whole;
-  areaToRotate = (location: Coordinates, rotation: Angle): Path2D =>
-    new Path2D();
+  areaToRotate = (location: Coordinates, rotation: Angle) => new Path2D();
 }
 
 /**

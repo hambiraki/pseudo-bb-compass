@@ -18,8 +18,7 @@ class Agitator implements Area {
     return this.whole(location, rotation);
   };
   areaToMove = this.whole;
-  areaToRotate = (location: Coordinates, rotation: Angle): Path2D =>
-    new Path2D();
+  areaToRotate = (location: Coordinates, rotation: Angle) => new Path2D();
 }
 
 /**
