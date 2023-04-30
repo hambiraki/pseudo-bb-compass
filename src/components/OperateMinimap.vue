@@ -1,4 +1,5 @@
 <template>
+  aaaaaaaaaaaaaaaaaaaaa
   <canvas
     ref="minimapCanvas"
     v-bind:width="pxCanvasSide"
