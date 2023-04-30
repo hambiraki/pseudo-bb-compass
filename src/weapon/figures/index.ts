@@ -13,37 +13,39 @@ import { ObjectKeys } from "@/utils";
 import type { Angle, Coordinates, Time } from "@/units";
 
 export interface Area {
-    whole(location: Coordinates, rotation: Angle): Path2D;
-    at(location: Coordinates, rotation: Angle, time:Time): Path2D;
+  whole(location: Coordinates, rotation: Angle): Path2D;
+  at(location: Coordinates, rotation: Angle, time: Time): Path2D;
+  areaToMove(location: Coordinates, rotation: Angle): Path2D;
+  areaToRotate(location: Coordinates, rotation: Angle): Path2D;
 }
 
 export const series2model = {
-    "索敵センサー": ObjectKeys(sensor),
-    "ND索敵センサー": ObjectKeys(ndSensor),
-    "BRトラッカー": ObjectKeys(brTracker),
-    "滞空索敵弾":ObjectKeys(balloon),
-    "Vセンサー投射器A":ObjectKeys(vSensorA),
-    "Vセンサー投射器B":ObjectKeys(vSensorB),
-    "偵察機": ObjectKeys(scoutor),
-    "クリアリングソナー":ObjectKeys(sonar),
-    "レーダーユニット":ObjectKeys(rader),
-    "要請兵器":ObjectKeys(boltOnUnit),
-    "FJ－アジテーター":ObjectKeys(agitator),
-}
+  索敵センサー: ObjectKeys(sensor),
+  ND索敵センサー: ObjectKeys(ndSensor),
+  BRトラッカー: ObjectKeys(brTracker),
+  滞空索敵弾: ObjectKeys(balloon),
+  Vセンサー投射器A: ObjectKeys(vSensorA),
+  Vセンサー投射器B: ObjectKeys(vSensorB),
+  偵察機: ObjectKeys(scoutor),
+  クリアリングソナー: ObjectKeys(sonar),
+  レーダーユニット: ObjectKeys(rader),
+  要請兵器: ObjectKeys(boltOnUnit),
+  "FJ－アジテーター": ObjectKeys(agitator),
+};
 
 const model2weaponSubclass = {
-    ...sensor,
-    ...ndSensor,
-    ...brTracker,
-    ...balloon,
-    ...vSensorA,
-    ...vSensorB,
-    ...scoutor,
-    ...sonar,
-    ...rader,
-    ...boltOnUnit,
-    ...agitator,
-}
+  ...sensor,
+  ...ndSensor,
+  ...brTracker,
+  ...balloon,
+  ...vSensorA,
+  ...vSensorB,
+  ...scoutor,
+  ...sonar,
+  ...rader,
+  ...boltOnUnit,
+  ...agitator,
+};
 
 type Model = keyof typeof model2weaponSubclass;
 export const model2weapon: Record<Model, Area> = model2weaponSubclass;
