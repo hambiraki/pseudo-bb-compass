@@ -18,7 +18,11 @@ export class Weapon {
     ctx: CanvasRenderingContext2D,
     point: Coordinates
   ): boolean => {
-    return ctx.isPointInPath(this.centerPoint, point.x.px, point.y.px);
+    return ctx.isPointInPath(
+      this.area.areaToMove(this.location, this.rotation),
+      point.x.px,
+      point.y.px
+    );
   };
   readonly isPointToRotate = (
     ctx: CanvasRenderingContext2D,
@@ -26,7 +30,7 @@ export class Weapon {
   ): boolean => {
     if (this.isPointToMove(ctx, point)) return false;
     return ctx.isPointInPath(
-      this.area.whole(this.location, this.rotation),
+      this.area.areaToRotate(this.location, this.rotation),
       point.x.px,
       point.y.px
     );
