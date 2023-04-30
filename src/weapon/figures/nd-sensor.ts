@@ -1,5 +1,5 @@
 import { Coordinates, Length, Angle, type Time } from "@/units";
-import { makeCircle, makeLine } from "./utils";
+import { makeCircle, makeLine } from "../utils";
 import type { Area } from ".";
 
 // ND索敵センサー系統

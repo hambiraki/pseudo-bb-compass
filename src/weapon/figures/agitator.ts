@@ -1,5 +1,5 @@
 import { type Coordinates, Length, type Angle, Time } from "@/units";
-import { makeCircle } from "./utils";
+import { makeCircle } from "../utils";
 import type { Area } from ".";
 
 // FJ－アジテーター系統

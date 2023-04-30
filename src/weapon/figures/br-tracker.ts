@@ -1,6 +1,6 @@
 import { Coordinates, Length, Angle, Time } from "@/units";
 import { assert } from "@vue/compiler-core";
-import { makeCircle, makeSector } from "./utils";
+import { makeCircle, makeSector } from "../utils";
 import type { Area } from ".";
 
 // BRトラッカー系統

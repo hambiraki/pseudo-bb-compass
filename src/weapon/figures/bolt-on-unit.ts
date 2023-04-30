@@ -1,6 +1,6 @@
 import { Coordinates, Length, Angle, type Time, Speed } from "@/units";
-import { makeCircle, makeLine } from "./utils";
 import type { Area } from ".";
+import { makeCircle, makeLine } from "../utils";
 
 // 要請兵器系統
 class BoltOnUnit implements Area {

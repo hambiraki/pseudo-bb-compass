@@ -1,5 +1,5 @@
 import { Coordinates, Length, Angle, Time } from "@/units";
-import { makeCircle } from "./utils";
+import { makeCircle } from "../utils";
 import type { Area } from ".";
 
 // Vセンサー投射器B系統

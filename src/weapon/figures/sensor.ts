@@ -2,7 +2,7 @@
  * 索敵センサー系統
  */
 import { Coordinates, Length, Angle, type Time } from "@/units";
-import { makeCircle } from "./utils";
+import { makeCircle } from "../utils";
 import type { Area } from ".";
 
 class Sensor implements Area {

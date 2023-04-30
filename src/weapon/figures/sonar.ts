@@ -1,5 +1,5 @@
 import { Coordinates, Length, Angle, type Time } from "@/units";
-import { makeCircle } from "./utils";
+import { makeCircle } from "../utils";
 import type { Area } from ".";
 
 // クリアリングソナー系統

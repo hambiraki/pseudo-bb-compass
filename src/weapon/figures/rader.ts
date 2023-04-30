@@ -1,5 +1,5 @@
 import { Coordinates, Length, Angle, Time } from "@/units";
-import { makeCircle, makeSector } from "./utils";
+import { makeCircle, makeSector } from "../utils";
 import type { Area } from ".";
 
 // レーダーユニット系統
