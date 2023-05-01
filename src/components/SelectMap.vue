@@ -38,9 +38,8 @@ const situations = computed((): Situation[] => {
   return getKeyByValue(situation2location, location.value);
 });
 watch(situations, (): void => {
-  if (situations.value[0] !== undefined) {
-    situation.value = situations.value[0];
-  }
+  if (situations.value[0] === undefined) return;
+  situation.value = situations.value[0];
 });
 interface Emits {
   (event: "update:situation", newSituation: Situation): void;

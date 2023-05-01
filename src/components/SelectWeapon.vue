@@ -29,6 +29,7 @@ const modelNames = computed((): ModelName[] => {
 });
 const selectedModel: Ref<ModelName> = ref("索敵センサー");
 watch(selectedSeries, (): void => {
+  if (modelNames.value[0] === undefined) return;
   selectedModel.value = modelNames.value[0];
 });
 
