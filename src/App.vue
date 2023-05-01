@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch, computed, ref, shallowReactive } from "vue";
+import { watch, ref, shallowReactive, watchEffect } from "vue";
 import { Minimap } from "./minimaps";
 import SelectWeapon from "./components/SelectWeapon.vue";
 import type { Weapon } from "./weapon/weapon";
@@ -22,9 +22,14 @@ import SelectMap from "./components/SelectMap.vue";
 import OperateMinimap from "./components/OperateMinimap.vue";
 
 const situation = ref<Situation>("戦線突破");
-const minimap = computed((): Minimap => {
-  return new Minimap(situation.value);
+const minimap = ref(new Minimap(situation.value));
+watchEffect((): void => {
+  minimap.value = new Minimap(situation.value);
 });
+window.addEventListener("resize", (): void => {
+  minimap.value = new Minimap(situation.value);
+});
+
 const weapons = shallowReactive<Weapon[]>([]);
 const pushWeapons = (weapon: Weapon): void => {
   weapons.push(weapon);
@@ -40,6 +45,7 @@ header {
   line-height: 1.5;
   max-height: 100vh;
 }
+
 div.ribbonmenu {
   overflow: hidden;
   -webkit-box-shadow: 0px 2px 4px gray;

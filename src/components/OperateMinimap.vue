@@ -1,34 +1,33 @@
 <template>
   <canvas
     ref="minimapCanvas"
-    v-bind:width="pxCanvasSide"
-    v-bind:height="pxCanvasSide"
+    v-bind:width="pxCanvasSide()"
+    v-bind:height="pxCanvasSide()"
     style="touch-action: pinch-zoom"
     v-on:pointerdown="setActiveWeapon"
     v-on:pointermove="transform"
     v-on:pointerup="clearActiveWeapon"
+    v-on:pointerout="clearActiveWeapon"
   ></canvas>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from "vue";
+import { onMounted, shallowReactive, shallowRef, watch } from "vue";
 import { detectClickedWeapon, type ActiveWeapon } from "@/weapon/active-weapon";
 import type { Weapon } from "@/weapon/weapon";
 import { Length } from "@/units";
 import type { Minimap } from "@/minimaps";
 
-const minimapCanvas = ref<HTMLCanvasElement>();
+const minimapCanvas = shallowRef<HTMLCanvasElement>();
 // ウィンドウ幅変更時に変動(それ以外は定数)
-const pxCanvasSide = computed((): number => {
-  return Math.min(window.innerWidth, window.innerHeight);
-});
-
+const pxCanvasSide = (): number =>
+  Math.min(window.innerWidth, 0.7 * window.innerHeight);
 interface Props {
   minimap: Minimap;
   weapons: Weapon[];
 }
 const props = defineProps<Props>();
-const weapons = reactive(props.weapons);
+const weapons = shallowReactive(props.weapons);
 
 const draw = (): void => {
   if (minimapCanvas.value === undefined) return;
@@ -46,7 +45,7 @@ onMounted(draw);
 watch(props, draw);
 
 // ドラッグ処理
-const activeWeapon = ref<ActiveWeapon | null>(null);
+const activeWeapon = shallowRef<ActiveWeapon | null>(null);
 const setActiveWeapon = (event: PointerEvent): void => {
   if (minimapCanvas.value === undefined) return;
   const rect = minimapCanvas.value.getBoundingClientRect();
@@ -61,8 +60,6 @@ const transform = (event: PointerEvent): void => {
   weapons[activeIndex] = activeWeapon.value.weapon;
 };
 const clearActiveWeapon = (): void => {
-  console.log("aaa");
-
   activeWeapon.value = null;
 };
 </script>
