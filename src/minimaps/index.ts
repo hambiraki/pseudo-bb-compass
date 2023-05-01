@@ -4,6 +4,7 @@ import {
   type Situation,
   type Location,
 } from "./minimap-names";
+import { scales } from "./scales";
 
 // url用定数
 const locationBaseUrl = "https://ps4.borderbreak.com/data/location";
@@ -17,10 +18,12 @@ const canvasYStart = 0; // dy(Canvasの描画開始位置Y)
 
 export class Minimap {
   readonly Image: HTMLImageElement;
+  readonly scale: number;
   public hasDownloaded = false; // 非同期処理にすべき？
   constructor(situation: Situation) {
     const location = situation2location[situation];
     this.Image = downloadMapImage(location, situation);
+    this.scale = scales[location];
   }
   readonly draw = (
     ctx: CanvasRenderingContext2D,
