@@ -13,10 +13,10 @@ export const detectClickedWeapon = (
   );
   for (const [index, weapon] of [...weapons].reverse().entries()) {
     if (weapon.isPointToMove(context, point)) {
-      return new MovingWeapon(index, weapon, rect);
+      return new MovingWeapon(weapons.length - 1 - index, weapon, rect);
     }
     if (weapon.isPointToRotate(context, point)) {
-      return new RotatingWeapon(index, weapon, rect);
+      return new RotatingWeapon(weapons.length - 1 - index, weapon, rect);
     }
   }
   return null;
