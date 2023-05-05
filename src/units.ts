@@ -1,16 +1,17 @@
-import { ref } from "vue";
+import { inject, type InjectionKey } from "vue";
+
+export const scaleKey: InjectionKey<number> = Symbol("scale");
 
 export class Length {
-  static pxpmScale = ref(1); // scale[px/m]
   private constructor(readonly m: number) {}
   static byMeter(meter: number): Length {
     return new Length(meter);
   }
   static byPixel(pixel: number): Length {
-    return new Length(pixel / Length.pxpmScale.value);
+    return new Length(pixel / inject(scaleKey, 1));
   }
   get px(): number {
-    return this.m * Length.pxpmScale.value;
+    return this.m * inject(scaleKey, 1);
   }
 
   plus(addend: Length): Length {

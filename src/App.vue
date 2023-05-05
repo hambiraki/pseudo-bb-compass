@@ -17,13 +17,14 @@
 </template>
 
 <script setup lang="ts">
-import { watch, ref, shallowReactive, watchEffect, computed } from "vue";
+import { watch, ref, shallowReactive, computed, provide } from "vue";
 import { Minimap } from "./minimaps";
 import SelectWeapon from "./components/SelectWeapon.vue";
 import type { Weapon } from "./weapon/weapon";
 import type { Situation } from "./minimaps/minimap-names";
 import SelectMap from "./components/SelectMap.vue";
 import OperateMinimap from "./components/OperateMinimap.vue";
+import { scaleKey } from "./units";
 
 // ウィンドウ幅変更時に変動(それ以外は定数)
 const pxCanvasSide = ref(Math.min(window.innerWidth, 0.7 * window.innerHeight));
@@ -38,8 +39,10 @@ const pushWeapons = (weapon: Weapon): void => {
   weapons.push(weapon);
 };
 
+provide(scaleKey, 1);
 watch(situation, (): void => {
   weapons.splice(0);
+  provide(scaleKey, minimap.value.scaleOnOriginal);
 });
 </script>
 
