@@ -38,7 +38,6 @@ const draw = (): void => {
 onMounted(draw);
 watch(props, draw);
 window.addEventListener("resize", draw);
-
 // ドラッグ処理
 const activeWeapon = shallowRef<ActiveWeapon | null>(null);
 const setActiveWeapon = (event: PointerEvent): void => {
