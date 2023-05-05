@@ -1,16 +1,14 @@
-import { ref } from "vue";
-
 export class Length {
-  static pxpmScale = ref(1); // scale[px/m]
+  static pxpmScale = 1; // scale[px/m]
   private constructor(readonly m: number) {}
   static byMeter(meter: number): Length {
     return new Length(meter);
   }
   static byPixel(pixel: number): Length {
-    return new Length(pixel / Length.pxpmScale.value);
+    return new Length(pixel / Length.pxpmScale);
   }
   get px(): number {
-    return this.m * Length.pxpmScale.value;
+    return this.m * Length.pxpmScale;
   }
 
   plus(addend: Length): Length {

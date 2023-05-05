@@ -31,6 +31,7 @@ const draw = (): void => {
   if (minimapCanvas.value === undefined) return;
   const context = minimapCanvas.value.getContext("2d");
   if (context === null) return;
+  Length.pxpmScale = props.minimap.scale * props.pxCanvasSide;
   context.clearRect(0, 0, props.pxCanvasSide, props.pxCanvasSide);
   props.minimap.draw(context, Length.byPixel(props.pxCanvasSide));
   for (const weapon of weapons) weapon.draw(context);

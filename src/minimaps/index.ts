@@ -23,7 +23,7 @@ export class Minimap {
   constructor(situation: Situation) {
     const location = situation2location[situation];
     this.Image = downloadMapImage(location, situation);
-    this.scale = scales[location];
+    this.scale = scales[location] / originalSquareSideLength;
   }
   readonly draw = (
     ctx: CanvasRenderingContext2D,

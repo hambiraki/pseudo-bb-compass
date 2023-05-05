@@ -36,5 +36,5 @@ export const scales: Record<Location, number> = {
   "マウナ・エレ溶岩流域": 9999,
   M532バイオドーム: 333,
   アルマイヤ大砂海: 333,
-  エスコンダ工廠: 333,
+  エスコンダ工廠: 3,
 } as const;

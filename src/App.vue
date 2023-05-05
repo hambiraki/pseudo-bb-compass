@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch, ref, shallowReactive, watchEffect, computed } from "vue";
+import { watch, ref, shallowReactive, computed } from "vue";
 import { Minimap } from "./minimaps";
 import SelectWeapon from "./components/SelectWeapon.vue";
 import type { Weapon } from "./weapon/weapon";
