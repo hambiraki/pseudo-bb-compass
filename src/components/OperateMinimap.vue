@@ -9,13 +9,15 @@
     v-on:pointerup="clearActiveWeapon"
     v-on:pointerout="clearActiveWeapon"
   ></canvas>
+  <br />
+  <button v-on:click="startAnimation">▷</button>
 </template>
 
 <script setup lang="ts">
 import { onMounted, shallowReactive, shallowRef, watch } from "vue";
 import { detectClickedWeapon, type ActiveWeapon } from "@/weapon/active-weapon";
 import type { Weapon } from "@/weapon/weapon";
-import { Length } from "@/units";
+import { Length, Time } from "@/units";
 import type { Minimap } from "@/minimaps";
 
 const minimapCanvas = shallowRef<HTMLCanvasElement>();
@@ -26,6 +28,24 @@ interface Props {
 }
 const props = defineProps<Props>();
 const weapons = shallowReactive(props.weapons);
+
+let time = shallowReactive(new Time(0));
+const S_INTERVAL = 0.1;
+const animate = (time: Time): void => {
+  if (minimapCanvas.value === undefined) return;
+  const context = minimapCanvas.value.getContext("2d");
+  if (context === null) return;
+  Length.pxpmScale = props.minimap.scale * props.pxCanvasSide;
+  context.clearRect(0, 0, props.pxCanvasSide, props.pxCanvasSide);
+  props.minimap.draw(context, Length.byPixel(props.pxCanvasSide));
+  for (const weapon of weapons) weapon.animate(context, time);
+};
+const startAnimation = (): void => {
+  setInterval(() => {
+    animate(time);
+    time = new Time(time.s + S_INTERVAL);
+  }, S_INTERVAL * 1000);
+};
 
 const draw = (): void => {
   if (minimapCanvas.value === undefined) return;
