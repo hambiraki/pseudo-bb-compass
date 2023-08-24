@@ -23,7 +23,7 @@ class Rader implements Area {
     return makeSector(location, this.radius, rotation, this.center);
   };
   areaToMove = (location: Coordinates, rotation: Angle): Path2D =>
-    makeCircle(location, Length.byMeter(5));
+    makeCircle(location, Length.byMeter(20));
   areaToRotate = this.whole;
 }
 

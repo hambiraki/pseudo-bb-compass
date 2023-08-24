@@ -49,7 +49,7 @@ class BoltOnUnit implements Area {
     );
   };
   areaToMove = (location: Coordinates, rotation: Angle): Path2D =>
-    makeCircle(location, Length.byMeter(5));
+    makeCircle(location, Length.byMeter(20));
   areaToRotate = this.whole;
 }
 
