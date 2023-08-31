@@ -8,14 +8,14 @@ class NdSensor implements Area {
   constructor(status: { mRadius: number }) {
     this.radius = Length.byMeter(status.mRadius);
   }
-  whole = (location: Coordinates, rotation: Angle): Path2D => {
-    return makeLine(location, this.radius, rotation);
+  whole = (position: Coordinates, rotation: Angle): Path2D => {
+    return makeLine(position, this.radius, rotation);
   };
-  at = (location: Coordinates, rotation: Angle, time: Time): Path2D => {
-    return makeLine(location, this.radius, rotation);
+  at = (position: Coordinates, rotation: Angle, time: Time): Path2D => {
+    return makeLine(position, this.radius, rotation);
   };
-  areaToMove = (location: Coordinates, rotation: Angle): Path2D =>
-    makeCircle(location, Length.byMeter(20));
+  areaToMove = (position: Coordinates, rotation: Angle): Path2D =>
+    makeCircle(position, Length.byMeter(20));
   areaToRotate = this.whole;
 }
 

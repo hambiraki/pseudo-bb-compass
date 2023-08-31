@@ -8,18 +8,18 @@ const AREA_COLOR = "rgba(255,0,0,0.3)";
 export class Weapon {
   constructor(
     private readonly area: Area,
-    private readonly location: Coordinates,
+    private readonly position: Coordinates,
     private readonly rotation: Angle
   ) {}
   private get centerPoint(): Path2D {
-    return makeCircle(this.location, Length.byMeter(5));
+    return makeCircle(this.position, Length.byMeter(5));
   }
   readonly isPointToMove = (
     ctx: CanvasRenderingContext2D,
     point: Coordinates
   ): boolean => {
     return ctx.isPointInPath(
-      this.area.areaToMove(this.location, this.rotation),
+      this.area.areaToMove(this.position, this.rotation),
       point.x.px,
       point.y.px
     );
@@ -30,7 +30,7 @@ export class Weapon {
   ): boolean => {
     if (this.isPointToMove(ctx, point)) return false;
     return ctx.isPointInPath(
-      this.area.areaToRotate(this.location, this.rotation),
+      this.area.areaToRotate(this.position, this.rotation),
       point.x.px,
       point.y.px
     );
@@ -39,18 +39,18 @@ export class Weapon {
     return new Weapon(this.area, point, this.rotation);
   };
   readonly rotate = (point: Coordinates): Weapon => {
-    const newRotation = point.minus(this.location).argument;
-    return new Weapon(this.area, this.location, newRotation);
+    const newRotation = point.minus(this.position).argument;
+    return new Weapon(this.area, this.position, newRotation);
   };
   readonly draw = (ctx: CanvasRenderingContext2D): void => {
     ctx.fillStyle = AREA_COLOR;
-    ctx.fill(this.area.whole(this.location, this.rotation));
+    ctx.fill(this.area.whole(this.position, this.rotation));
     ctx.fillStyle = CENTER_POINT_COLOR;
     ctx.fill(this.centerPoint);
   };
   readonly animate = (ctx: CanvasRenderingContext2D, time: Time): void => {
     ctx.fillStyle = AREA_COLOR;
-    ctx.fill(this.area.at(this.location, this.rotation, time));
+    ctx.fill(this.area.at(this.position, this.rotation, time));
     ctx.fillStyle = CENTER_POINT_COLOR;
     ctx.fill(this.centerPoint);
   };

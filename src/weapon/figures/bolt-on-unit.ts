@@ -16,11 +16,11 @@ class BoltOnUnit implements Area {
     this.lifetime = this.speed.takeToGo(Length.byMeter(status.mDistance));
     this.distanceToStart = Length.byMeter(status.mToStart);
   }
-  whole = (location: Coordinates, rotation: Angle): Path2D => {
+  whole = (position: Coordinates, rotation: Angle): Path2D => {
     // 基準点と長さ
     const rightWing = Coordinates.byPolar(this.radius, rotation.rightFace);
     const leftWing = Coordinates.byPolar(this.radius, rotation.leftFace);
-    const beginCenter = location.minus(
+    const beginCenter = position.minus(
       Coordinates.byPolar(this.distanceToStart, rotation)
     );
     const endCenter = beginCenter.plus(
@@ -40,16 +40,16 @@ class BoltOnUnit implements Area {
     area.closePath();
     return area;
   };
-  at = (location: Coordinates, rotation: Angle, time: Time): Path2D => {
+  at = (position: Coordinates, rotation: Angle, time: Time): Path2D => {
     if (time.s > this.lifetime.s) return new Path2D();
     return makeLine(
-      location.plus(Coordinates.byPolar(this.speed.times(time), rotation)),
+      position.plus(Coordinates.byPolar(this.speed.times(time), rotation)),
       this.radius,
       rotation.rightFace
     );
   };
-  areaToMove = (location: Coordinates, rotation: Angle): Path2D =>
-    makeCircle(location, Length.byMeter(20));
+  areaToMove = (position: Coordinates, rotation: Angle): Path2D =>
+    makeCircle(position, Length.byMeter(20));
   areaToRotate = this.whole;
 }
 

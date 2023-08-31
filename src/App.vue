@@ -2,7 +2,7 @@
   <div>
     <div class="wrap">
       <div class="ribbonmenu z-index-ribbonmenu">
-        <SelectMap v-model:situation="situation" />
+        <SelectMap v-model:map-situation="situation" />
       </div>
       <div class="ribbonmenu z-index-ribbonmenu">
         <SelectWeapon v-on:add-weapon="pushWeapons" />
@@ -17,11 +17,18 @@
 </template>
 
 <script setup lang="ts">
-import { watch, ref, shallowReactive, computed } from "vue";
+import {
+  watch,
+  ref,
+  shallowReactive,
+  computed,
+  onBeforeMount,
+  onMounted,
+} from "vue";
 import { Minimap } from "./minimaps";
 import SelectWeapon from "./components/SelectWeapon.vue";
 import type { Weapon } from "./weapon/weapon";
-import type { Situation } from "./minimaps/minimap-names";
+import type { MapSituation } from "./minimaps/minimap-names";
 import SelectMap from "./components/SelectMap.vue";
 import OperateMinimap from "./components/OperateMinimap.vue";
 
@@ -31,12 +38,15 @@ window.addEventListener("resize", (): void => {
   // OperateMinimapで別途描画を更新する
   pxCanvasSide.value = Math.min(window.innerWidth, 0.7 * window.innerHeight);
 });
-const situation = ref<Situation>("戦線突破");
+const situation = ref<MapSituation>("戦線突破");
 const minimap = computed(() => new Minimap(situation.value));
 const weapons = shallowReactive<Weapon[]>([]);
 const pushWeapons = (weapon: Weapon): void => {
+  const aaa = "戦線突破";
   weapons.push(weapon);
 };
+
+onMounted(() => {});
 
 watch(situation, (): void => {
   weapons.splice(0);

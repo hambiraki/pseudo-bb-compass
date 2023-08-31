@@ -12,18 +12,18 @@ class Rader implements Area {
     this.center = Angle.byDegree(status.degCenter);
     this.toFull = new Time(status.sToFull);
   }
-  whole = (location: Coordinates, rotation: Angle): Path2D => {
-    return makeSector(location, this.radius, rotation, this.center);
+  whole = (position: Coordinates, rotation: Angle): Path2D => {
+    return makeSector(position, this.radius, rotation, this.center);
   };
-  at = (location: Coordinates, rotation: Angle, time: Time): Path2D => {
+  at = (position: Coordinates, rotation: Angle, time: Time): Path2D => {
     if (time.s <= this.toFull.s) {
       const expandingRadius = this.radius.times(time.s / this.toFull.s);
-      return makeSector(location, expandingRadius, rotation, this.center);
+      return makeSector(position, expandingRadius, rotation, this.center);
     }
-    return makeSector(location, this.radius, rotation, this.center);
+    return makeSector(position, this.radius, rotation, this.center);
   };
-  areaToMove = (location: Coordinates, rotation: Angle): Path2D =>
-    makeCircle(location, Length.byMeter(20));
+  areaToMove = (position: Coordinates, rotation: Angle): Path2D =>
+    makeCircle(position, Length.byMeter(20));
   areaToRotate = this.whole;
 }
 

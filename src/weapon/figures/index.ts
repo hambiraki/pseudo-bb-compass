@@ -13,10 +13,10 @@ import { ObjectKeys } from "@/utils";
 import type { Angle, Coordinates, Time } from "@/units";
 
 export interface Area {
-  whole(location: Coordinates, rotation: Angle): Path2D;
-  at(location: Coordinates, rotation: Angle, time: Time): Path2D;
-  areaToMove(location: Coordinates, rotation: Angle): Path2D;
-  areaToRotate(location: Coordinates, rotation: Angle): Path2D;
+  whole(position: Coordinates, rotation: Angle): Path2D;
+  at(position: Coordinates, rotation: Angle, time: Time): Path2D;
+  areaToMove(position: Coordinates, rotation: Angle): Path2D;
+  areaToRotate(position: Coordinates, rotation: Angle): Path2D;
 }
 
 export const series2model = {

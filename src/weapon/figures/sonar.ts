@@ -8,14 +8,14 @@ class Sonar implements Area {
   constructor(status: Record<"mRadius", number>) {
     this.radius = Length.byMeter(status.mRadius);
   }
-  whole = (location: Coordinates, rotation: Angle): Path2D => {
-    return makeCircle(location, this.radius);
+  whole = (position: Coordinates, rotation: Angle): Path2D => {
+    return makeCircle(position, this.radius);
   };
-  at = (location: Coordinates, rotation: Angle, time: Time): Path2D => {
+  at = (position: Coordinates, rotation: Angle, time: Time): Path2D => {
     return new Path2D();
   };
   areaToMove = this.whole;
-  areaToRotate = (location: Coordinates, rotation: Angle) => new Path2D();
+  areaToRotate = (position: Coordinates, rotation: Angle) => new Path2D();
 }
 
 /**

@@ -10,15 +10,15 @@ class Balloon implements Area {
     this.radius = Length.byMeter(status.mRadius);
     this.lifetime = new Time(status.sLifetime);
   }
-  whole = (location: Coordinates, rotation: Angle): Path2D => {
-    return makeCircle(location, this.radius);
+  whole = (position: Coordinates, rotation: Angle): Path2D => {
+    return makeCircle(position, this.radius);
   };
-  at = (location: Coordinates, rotation: Angle, time: Time): Path2D => {
+  at = (position: Coordinates, rotation: Angle, time: Time): Path2D => {
     if (time.s > this.lifetime.s) return new Path2D();
-    return this.whole(location, rotation);
+    return this.whole(position, rotation);
   };
   areaToMove = this.whole;
-  areaToRotate = (location: Coordinates, rotation: Angle) => new Path2D();
+  areaToRotate = (position: Coordinates, rotation: Angle) => new Path2D();
 }
 
 /**

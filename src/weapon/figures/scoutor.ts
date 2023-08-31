@@ -17,16 +17,16 @@ class Scoutor implements Area {
     this.lifetime = this.speed.takeToGo(Length.byMeter(status.mDistance));
   }
 
-  whole = (location: Coordinates, rotation: Angle): Path2D => {
+  whole = (position: Coordinates, rotation: Angle): Path2D => {
     const area = new Path2D();
     area.arc(
-      location.x.px,
-      location.y.px,
+      position.x.px,
+      position.y.px,
       this.radius.px,
       rotation.rightFace.radian,
       rotation.leftFace.radian
     );
-    const endAreaCenter = location.plus(
+    const endAreaCenter = position.plus(
       Coordinates.byPolar(this.speed.times(this.lifetime), rotation)
     );
     area.arc(
@@ -39,15 +39,15 @@ class Scoutor implements Area {
     area.closePath();
     return area;
   };
-  at = (location: Coordinates, rotation: Angle, time: Time): Path2D => {
+  at = (position: Coordinates, rotation: Angle, time: Time): Path2D => {
     if (time.s > this.lifetime.s) return new Path2D();
     return makeCircle(
-      location.plus(Coordinates.byPolar(this.speed.times(time), rotation)),
+      position.plus(Coordinates.byPolar(this.speed.times(time), rotation)),
       this.radius
     );
   };
-  areaToMove = (location: Coordinates, rotation: Angle): Path2D =>
-    makeCircle(location, this.radius);
+  areaToMove = (position: Coordinates, rotation: Angle): Path2D =>
+    makeCircle(position, this.radius);
   areaToRotate = this.whole;
 }
 

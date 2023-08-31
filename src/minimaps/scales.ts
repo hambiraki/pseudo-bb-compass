@@ -1,9 +1,9 @@
-import type { Location } from "./minimap-names";
+import type { MapLocation } from "./minimap-names";
 
 /**
  * @package
  */
-export const scales: Record<Location, number> = {
+export const scales: Record<MapLocation, number> = {
   スカービ渓谷: (160 / 100) * 0.7,
   旧ブロア市街地: 1.137 * 0.7,
   第3採掘島: 1.378 * 0.7,

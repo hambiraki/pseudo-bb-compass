@@ -108,7 +108,7 @@ export const situation2location = {
   断崖の相克: "ナヴァル岩石砂漠",
 } as const;
 
-export type Location =
+export type MapLocation =
   (typeof situation2location)[keyof typeof situation2location];
 
-export type Situation = keyof typeof situation2location;
+export type MapSituation = keyof typeof situation2location;

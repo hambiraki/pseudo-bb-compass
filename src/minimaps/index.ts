@@ -1,13 +1,13 @@
 import type { Length } from "@/units";
 import {
   situation2location,
-  type Situation,
-  type Location,
+  type MapSituation,
+  type MapLocation,
 } from "./minimap-names";
 import { scales } from "./scales";
 
 // url用定数
-const locationBaseUrl = "https://ps4.borderbreak.com/data/location";
+const mapDataBaseUrl = "https://ps4.borderbreak.com/data/location";
 
 // サイズ決め定数
 const originalXStart = 562; // sx(元画像の切り抜き始点X)
@@ -20,10 +20,10 @@ export class Minimap {
   readonly Image: HTMLImageElement;
   readonly scale: number;
   public hasDownloaded = false; // 非同期処理にすべき？
-  constructor(situation: Situation) {
-    const location = situation2location[situation];
-    this.Image = downloadMapImage(location, situation);
-    this.scale = scales[location] / originalSquareSideLength;
+  constructor(mapSituation: MapSituation) {
+    const mapLocation = situation2location[mapSituation];
+    this.Image = downloadMapImage(mapLocation, mapSituation);
+    this.scale = scales[mapLocation] / originalSquareSideLength;
   }
   readonly draw = (
     ctx: CanvasRenderingContext2D,
@@ -60,13 +60,13 @@ export class Minimap {
   };
 }
 const downloadMapImage = (
-  location: Location,
-  situation: Situation
+  mapLocation: MapLocation,
+  mapSituation: MapSituation
 ): HTMLImageElement => {
   const image = new Image();
-  image.alt = `${location}～${situation}～`;
-  const minimapIndex = extensions[situation];
-  const rawUrl = `${locationBaseUrl}/${location}/${situation}/${minimapIndex}`;
+  image.alt = `${mapLocation}～${mapSituation}～`;
+  const minimapIndex = extensions[mapSituation];
+  const rawUrl = `${mapDataBaseUrl}/${mapLocation}/${mapSituation}/${minimapIndex}`;
   image.src = encodeURI(rawUrl);
   return image;
 };
