@@ -42,10 +42,10 @@ watch(mapSituations, (): void => {
   mapSituation.value = mapSituations.value[0];
 });
 interface Emits {
-  (event: "update:situation", newSituation: MapSituation): void;
+  (event: "update:map-situation", newSituation: MapSituation): void;
 }
 const emit = defineEmits<Emits>();
 watch(mapSituation, (): void => {
-  emit("update:situation", mapSituation.value);
+  emit("update:map-situation", mapSituation.value);
 });
 </script>
