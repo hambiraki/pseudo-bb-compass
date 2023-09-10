@@ -20,11 +20,13 @@
 import { watch, ref, shallowReactive, computed, onMounted } from "vue";
 import { Minimap } from "./minimaps";
 import SelectWeapon from "./components/SelectWeapon.vue";
-import type { Weapon } from "./weapon/weapon";
+import { Weapon } from "./weapon/weapon";
 import { isMapSituation, type MapSituation } from "./minimaps/minimap-names";
 import SelectMap from "./components/SelectMap.vue";
 import OperateMinimap from "./components/OperateMinimap.vue";
-import { parseQuery } from "vue-router";
+import { parseQuery, type LocationQueryValue } from "vue-router";
+import { model2weapon } from "./weapon/figures";
+import { Angle, Coordinates, Length } from "./units";
 
 // ウィンドウ幅変更時に変動(それ以外は定数)
 const pxCanvasSide = ref(Math.min(window.innerWidth, 0.7 * window.innerHeight));
@@ -32,20 +34,39 @@ window.addEventListener("resize", (): void => {
   // OperateMinimapで別途描画を更新する
   pxCanvasSide.value = Math.min(window.innerWidth, 0.7 * window.innerHeight);
 });
-const mapSituation = ref<MapSituation>("戦線突破");
+const queryDict = parseQuery(location.search);
+const initSituation: MapSituation =
+  typeof queryDict.map === "string" && isMapSituation(queryDict.map)
+    ? queryDict.map
+    : "戦線突破";
+const initWeapons: Weapon[] = ((
+  weapon_query: undefined | LocationQueryValue | LocationQueryValue[]
+) => {
+  if (weapon_query === undefined) return [];
+  if (weapon_query === null) return [];
+  return [
+    new Weapon(
+      model2weapon["BRトラッカー"],
+      new Coordinates(Length.byMeter(50), Length.byMeter(100)),
+      Angle.byDegree(120)
+    ),
+  ];
+})(queryDict.weapon);
+const mapSituation = ref<MapSituation>(initSituation);
 const minimap = computed(() => new Minimap(mapSituation.value));
-const weapons = shallowReactive<Weapon[]>([]);
+const weapons = shallowReactive<Weapon[]>(initWeapons);
 const pushWeapons = (weapon: Weapon): void => {
   weapons.push(weapon);
 };
 
 onMounted(() => {
-  const queryDict = parseQuery(location.search);
-  if typeof queryDict.map === "string" && isMapSituation(queryDict.map){
-    mapSituation.value = queryDict.map;
-  }else{
-    mapSituation.value = "戦線突破";
-  }
+  console.log(queryDict!.weapon![0]);
+  console.log(queryDict!.weapon![1]);
+  const bbb = queryDict!.weapon![0]!.slice(1, -1).split(",").join("&");
+  const aaa = parseQuery(bbb);
+  console.log(aaa.name);
+  console.log(aaa.x);
+  console.log(aaa.y);
 });
 
 watch(mapSituation, (): void => {

@@ -112,3 +112,6 @@ export type MapLocation =
   (typeof situation2location)[keyof typeof situation2location];
 
 export type MapSituation = keyof typeof situation2location;
+
+export const isMapSituation = (situation: string): situation is MapSituation =>
+  situation in situation2location;
