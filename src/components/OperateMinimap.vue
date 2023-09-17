@@ -11,6 +11,7 @@
   ></canvas>
   <br />
   <button v-on:click="startAnimation">▷</button>
+  <button v-on:click="convertQueryParams">URLに保存</button>
 </template>
 
 <script setup lang="ts">
@@ -45,6 +46,14 @@ const startAnimation = (): void => {
     animate(time);
     time = new Time(time.s + S_INTERVAL);
   }, S_INTERVAL * 1000);
+};
+const convertQueryParams = (): void => {
+  const searchParams = new URLSearchParams(
+    [["map", props.minimap.mapSituation]].concat(
+      weapons.map((weapon) => ["weapon", weapon.toString()])
+    )
+  );
+  location.search = decodeURIComponent(searchParams.toString());
 };
 
 const draw = async (): Promise<void> => {

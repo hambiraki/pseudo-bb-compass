@@ -33,7 +33,8 @@ export const series2model = {
   "FJ－アジテーター": ObjectKeys(agitator),
 };
 
-export const isWeaponModel = (name: string): name is Model => {
+export const isWeaponModelName = (name: unknown): name is Model => {
+  if (typeof name !== "string") return false;
   for (const models of ObjectValues(series2model)) {
     if (models.some((some) => some === name)) return true;
   }

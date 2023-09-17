@@ -25,8 +25,6 @@ import { isMapSituation, type MapSituation } from "./minimaps/minimap-names";
 import SelectMap from "./components/SelectMap.vue";
 import OperateMinimap from "./components/OperateMinimap.vue";
 import { parseQuery, type LocationQueryValue } from "vue-router";
-import { isWeaponModel, model2weapon } from "./weapon/figures";
-import { Angle, Coordinates, Length } from "./units";
 import { isNotNull } from "typesafe-utils";
 
 // ウィンドウ幅変更時に変動(それ以外は定数)
@@ -40,44 +38,13 @@ const initSituation: MapSituation =
   typeof queryDict.map === "string" && isMapSituation(queryDict.map)
     ? queryDict.map
     : "戦線突破";
-const readWeaponQuery = (weapon_queries: LocationQueryValue[]): Weapon[] => {
-  return weapon_queries
-    .map((weapon_query): Weapon | null => {
-      if (weapon_query === null) return null;
-      const parsedQuery = parseQuery(
-        weapon_query.slice(1, -1).split(",").join("&")
-      );
-      if (
-        typeof parsedQuery.name !== "string" ||
-        !isWeaponModel(parsedQuery.name)
-      )
-        return null;
-      if (parsedQuery.x === undefined || Number.isNaN(parsedQuery.x))
-        return null;
-      if (parsedQuery.y === undefined || Number.isNaN(parsedQuery.y))
-        return null;
-      const degree =
-        parsedQuery.deg === undefined || Number.isNaN(parsedQuery.deg)
-          ? 0
-          : Number(parsedQuery.deg);
-      return new Weapon(
-        parsedQuery.name,
-        model2weapon[parsedQuery.name],
-        new Coordinates(
-          Length.byMeter(Number(parsedQuery.x)),
-          Length.byMeter(Number(parsedQuery.y))
-        ),
-        Angle.byDegree(degree)
-      );
-    })
-    .filter(isNotNull);
-};
 const initWeapons: Weapon[] = ((
   weapon_query: undefined | LocationQueryValue | LocationQueryValue[]
 ) => {
   if (weapon_query === undefined) return [];
-  if (!Array.isArray(weapon_query)) return readWeaponQuery([weapon_query]);
-  return readWeaponQuery(weapon_query);
+  if (!Array.isArray(weapon_query))
+    return [weapon_query].map(Weapon.fromString).filter(isNotNull);
+  return weapon_query.map(Weapon.fromString).filter(isNotNull);
 })(queryDict.weapon);
 const mapSituation = ref<MapSituation>(initSituation);
 const minimap = computed(() => new Minimap(mapSituation.value));

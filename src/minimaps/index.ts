@@ -20,7 +20,7 @@ export class Minimap {
   readonly Image: Promise<HTMLImageElement>;
   readonly scale: number;
   public hasDownloaded = false; // 非同期処理にすべき？
-  constructor(mapSituation: MapSituation) {
+  constructor(readonly mapSituation: MapSituation) {
     const mapLocation = situation2location[mapSituation];
     this.scale = scales[mapLocation] / originalSquareSideLength;
     this.Image = downloadMapImage(mapLocation, mapSituation);
