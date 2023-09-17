@@ -53,7 +53,7 @@ const convertQueryParams = (): void => {
       weapons.map((weapon) => ["weapon", weapon.toString()])
     )
   );
-  location.search = decodeURIComponent(searchParams.toString());
+  location.search = encodeURI(searchParams.toString());
 };
 
 const draw = async (): Promise<void> => {

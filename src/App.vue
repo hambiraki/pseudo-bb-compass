@@ -33,11 +33,10 @@ window.addEventListener("resize", (): void => {
   // OperateMinimapで別途描画を更新する
   pxCanvasSide.value = Math.min(window.innerWidth, 0.7 * window.innerHeight);
 });
-const queryDict = parseQuery(location.search);
-const initSituation: MapSituation =
-  typeof queryDict.map === "string" && isMapSituation(queryDict.map)
-    ? queryDict.map
-    : "戦線突破";
+const queryDict = parseQuery(decodeURIComponent(location.search));
+const initSituation: MapSituation = isMapSituation(queryDict.map)
+  ? queryDict.map
+  : "戦線突破";
 const initWeapons: Weapon[] = ((
   weapon_query: undefined | LocationQueryValue | LocationQueryValue[]
 ) => {
