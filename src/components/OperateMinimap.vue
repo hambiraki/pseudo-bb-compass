@@ -30,30 +30,30 @@ const props = defineProps<Props>();
 const weapons = shallowReactive(props.weapons);
 
 let time = shallowReactive(new Time(0));
-const S_INTERVAL = 0.1;
-const animate = (time: Time): void => {
+const animate = async (time: Time): Promise<void> => {
   if (minimapCanvas.value === undefined) return;
   const context = minimapCanvas.value.getContext("2d");
   if (context === null) return;
   Length.pxpmScale = props.minimap.scale * props.pxCanvasSide;
   context.clearRect(0, 0, props.pxCanvasSide, props.pxCanvasSide);
-  props.minimap.draw(context, Length.byPixel(props.pxCanvasSide));
+  await props.minimap.draw(context, Length.byPixel(props.pxCanvasSide));
   for (const weapon of weapons) weapon.animate(context, time);
 };
 const startAnimation = (): void => {
+  const S_INTERVAL = 0.1; // 何秒ごとに描画するか
   setInterval(() => {
     animate(time);
     time = new Time(time.s + S_INTERVAL);
   }, S_INTERVAL * 1000);
 };
 
-const draw = (): void => {
+const draw = async (): Promise<void> => {
   if (minimapCanvas.value === undefined) return;
   const context = minimapCanvas.value.getContext("2d");
   if (context === null) return;
   Length.pxpmScale = props.minimap.scale * props.pxCanvasSide;
   context.clearRect(0, 0, props.pxCanvasSide, props.pxCanvasSide);
-  props.minimap.draw(context, Length.byPixel(props.pxCanvasSide));
+  await props.minimap.draw(context, Length.byPixel(props.pxCanvasSide));
   for (const weapon of weapons) weapon.draw(context);
 };
 onMounted(draw);

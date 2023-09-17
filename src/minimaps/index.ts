@@ -17,58 +17,52 @@ const canvasXStart = 0; // dx(Canvasの描画開始位置X)
 const canvasYStart = 0; // dy(Canvasの描画開始位置Y)
 
 export class Minimap {
-  readonly Image: HTMLImageElement;
+  readonly Image: Promise<HTMLImageElement>;
   readonly scale: number;
   public hasDownloaded = false; // 非同期処理にすべき？
   constructor(mapSituation: MapSituation) {
     const mapLocation = situation2location[mapSituation];
-    this.Image = downloadMapImage(mapLocation, mapSituation);
     this.scale = scales[mapLocation] / originalSquareSideLength;
+    this.Image = downloadMapImage(mapLocation, mapSituation);
   }
-  readonly draw = (
+  readonly draw = async (
     ctx: CanvasRenderingContext2D,
     minimapLength: Length
-  ): void => {
-    if (this.hasDownloaded) {
-      ctx.drawImage(
-        this.Image,
-        originalXStart,
-        originalYStart,
-        originalSquareSideLength,
-        originalSquareSideLength,
-        canvasXStart,
-        canvasYStart,
-        minimapLength.px,
-        minimapLength.px
-      );
-    } else {
-      this.hasDownloaded = true;
-      this.Image.onload = (): void => {
-        ctx.drawImage(
-          this.Image,
-          originalXStart,
-          originalYStart,
-          originalSquareSideLength,
-          originalSquareSideLength,
-          canvasXStart,
-          canvasYStart,
-          minimapLength.px,
-          minimapLength.px
-        );
-      };
+  ): Promise<void> => {
+    const loadedImage = await this.Image.catch((e) => {
+      console.log("マップ画像がダウンロードできませんでした", e);
+    });
+    if (loadedImage === undefined) {
+      console.log("マップ画像がダウンロードできませんでした");
+      return;
     }
+    ctx.drawImage(
+      loadedImage,
+      originalXStart,
+      originalYStart,
+      originalSquareSideLength,
+      originalSquareSideLength,
+      canvasXStart,
+      canvasYStart,
+      minimapLength.px,
+      minimapLength.px
+    );
   };
 }
+
 const downloadMapImage = (
   mapLocation: MapLocation,
   mapSituation: MapSituation
-): HTMLImageElement => {
+): Promise<HTMLImageElement> => {
   const image = new Image();
   image.alt = `${mapLocation}～${mapSituation}～`;
   const minimapIndex = extensions[mapSituation];
   const rawUrl = `${mapDataBaseUrl}/${mapLocation}/${mapSituation}/${minimapIndex}`;
   image.src = encodeURI(rawUrl);
-  return image;
+  return new Promise((resolve, reject) => {
+    image.onload = () => resolve(image);
+    image.onerror = (e) => reject(e);
+  });
 };
 
 const extensions = {
