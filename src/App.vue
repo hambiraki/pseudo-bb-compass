@@ -25,8 +25,9 @@ import { isMapSituation, type MapSituation } from "./minimaps/minimap-names";
 import SelectMap from "./components/SelectMap.vue";
 import OperateMinimap from "./components/OperateMinimap.vue";
 import { parseQuery, type LocationQueryValue } from "vue-router";
-import { model2weapon } from "./weapon/figures";
+import { isWeaponModel, model2weapon } from "./weapon/figures";
 import { Angle, Coordinates, Length } from "./units";
+import { isNotNull } from "typesafe-utils";
 
 // ウィンドウ幅変更時に変動(それ以外は定数)
 const pxCanvasSide = ref(Math.min(window.innerWidth, 0.7 * window.innerHeight));
@@ -39,18 +40,43 @@ const initSituation: MapSituation =
   typeof queryDict.map === "string" && isMapSituation(queryDict.map)
     ? queryDict.map
     : "戦線突破";
+const readWeaponQuery = (weapon_queries: LocationQueryValue[]): Weapon[] => {
+  return weapon_queries
+    .map((weapon_query): Weapon | null => {
+      if (weapon_query === null) return null;
+      const parsedQuery = parseQuery(
+        weapon_query.slice(1, -1).split(",").join("&")
+      );
+      if (
+        typeof parsedQuery.name !== "string" ||
+        !isWeaponModel(parsedQuery.name)
+      )
+        return null;
+      if (parsedQuery.x === undefined || Number.isNaN(parsedQuery.x))
+        return null;
+      if (parsedQuery.y === undefined || Number.isNaN(parsedQuery.y))
+        return null;
+      const degree =
+        parsedQuery.deg === undefined || Number.isNaN(parsedQuery.deg)
+          ? 0
+          : Number(parsedQuery.deg);
+      return new Weapon(
+        model2weapon[parsedQuery.name],
+        new Coordinates(
+          Length.byMeter(Number(parsedQuery.x)),
+          Length.byMeter(Number(parsedQuery.y))
+        ),
+        Angle.byDegree(degree)
+      );
+    })
+    .filter(isNotNull);
+};
 const initWeapons: Weapon[] = ((
   weapon_query: undefined | LocationQueryValue | LocationQueryValue[]
 ) => {
   if (weapon_query === undefined) return [];
-  if (weapon_query === null) return [];
-  return [
-    new Weapon(
-      model2weapon["BRトラッカー"],
-      new Coordinates(Length.byMeter(50), Length.byMeter(100)),
-      Angle.byDegree(120)
-    ),
-  ];
+  if (!Array.isArray(weapon_query)) return readWeaponQuery([weapon_query]);
+  return readWeaponQuery(weapon_query);
 })(queryDict.weapon);
 const mapSituation = ref<MapSituation>(initSituation);
 const minimap = computed(() => new Minimap(mapSituation.value));
@@ -58,16 +84,6 @@ const weapons = shallowReactive<Weapon[]>(initWeapons);
 const pushWeapons = (weapon: Weapon): void => {
   weapons.push(weapon);
 };
-
-onMounted(() => {
-  console.log(queryDict!.weapon![0]);
-  console.log(queryDict!.weapon![1]);
-  const bbb = queryDict!.weapon![0]!.slice(1, -1).split(",").join("&");
-  const aaa = parseQuery(bbb);
-  console.log(aaa.name);
-  console.log(aaa.x);
-  console.log(aaa.y);
-});
 
 watch(mapSituation, (): void => {
   weapons.splice(0);

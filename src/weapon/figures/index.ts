@@ -9,7 +9,7 @@ import { sonar } from "./sonar";
 import { rader } from "./rader";
 import { boltOnUnit } from "./bolt-on-unit";
 import { agitator } from "./agitator";
-import { ObjectKeys } from "@/utils";
+import { ObjectKeys, ObjectValues } from "@/utils";
 import type { Angle, Coordinates, Time } from "@/units";
 
 export interface Area {
@@ -31,6 +31,13 @@ export const series2model = {
   レーダーユニット: ObjectKeys(rader),
   要請兵器: ObjectKeys(boltOnUnit),
   "FJ－アジテーター": ObjectKeys(agitator),
+};
+
+export const isWeaponModel = (name: string): name is Model => {
+  for (const models of ObjectValues(series2model)) {
+    if (models.some((some) => some === name)) return true;
+  }
+  return false;
 };
 
 const model2weaponSubclass = {
