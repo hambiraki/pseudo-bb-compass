@@ -7,6 +7,7 @@ const AREA_COLOR = "rgba(255,0,0,0.3)";
 
 export class Weapon {
   constructor(
+    private readonly name: string, //クエリパラメータ用なので型緩め
     private readonly area: Area,
     private readonly position: Coordinates,
     private readonly rotation: Angle
@@ -36,11 +37,11 @@ export class Weapon {
     );
   };
   readonly move = (point: Coordinates): Weapon => {
-    return new Weapon(this.area, point, this.rotation);
+    return new Weapon(this.name, this.area, point, this.rotation);
   };
   readonly rotate = (point: Coordinates): Weapon => {
     const newRotation = point.minus(this.position).argument;
-    return new Weapon(this.area, this.position, newRotation);
+    return new Weapon(this.name, this.area, this.position, newRotation);
   };
   readonly draw = (ctx: CanvasRenderingContext2D): void => {
     ctx.fillStyle = AREA_COLOR;

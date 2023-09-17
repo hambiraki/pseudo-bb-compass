@@ -42,6 +42,7 @@ const addWeapon = (): void => {
   const origin = new Coordinates(length0, length0);
   const angle0 = Angle.byRadian(0);
   const selectedWeapon = new Weapon(
+    selectedModel.value,
     model2weapon[selectedModel.value],
     origin,
     angle0

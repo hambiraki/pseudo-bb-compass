@@ -61,6 +61,7 @@ const readWeaponQuery = (weapon_queries: LocationQueryValue[]): Weapon[] => {
           ? 0
           : Number(parsedQuery.deg);
       return new Weapon(
+        parsedQuery.name,
         model2weapon[parsedQuery.name],
         new Coordinates(
           Length.byMeter(Number(parsedQuery.x)),
